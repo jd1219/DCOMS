@@ -121,6 +121,8 @@ public class FoodOrderPage extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         FoodListView = new javax.swing.JPanel();
         FoodListTableSP = new javax.swing.JScrollPane();
         FoodListTable = new javax.swing.JTable();
@@ -203,12 +205,12 @@ public class FoodOrderPage extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 5;
         CheckoutList.add(OrderedItemsTable, gridBagConstraints);
 
         CheckoutBtn.setText("Checkout");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         CheckoutList.add(CheckoutBtn, gridBagConstraints);
@@ -217,7 +219,7 @@ public class FoodOrderPage extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 5;
         CheckoutList.add(jLabel2, gridBagConstraints);
 
         jLabel3.setText("Total Price:");
@@ -233,8 +235,20 @@ public class FoodOrderPage extends javax.swing.JFrame {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 0.3;
+        gridBagConstraints.weightx = 0.1;
         CheckoutList.add(jTextField1, gridBagConstraints);
+
+        jButton1.setText("Delete");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        CheckoutList.add(jButton1, gridBagConstraints);
+
+        jButton2.setText("Edit");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        CheckoutList.add(jButton2, gridBagConstraints);
 
         MainContent.add(CheckoutList, java.awt.BorderLayout.LINE_END);
 
@@ -381,6 +395,8 @@ public class FoodOrderPage extends javax.swing.JFrame {
     private javax.swing.JPanel RightSearchBar;
     private javax.swing.JComboBox<String> categoryListComboBox;
     private javax.swing.JTextField filterFoodTF;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -116,6 +116,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
+        jLabel15 = new javax.swing.JLabel();
         quantitySpinner = new javax.swing.JSpinner();
         FoodDetailsPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -134,6 +135,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(800, 500));
         setPreferredSize(new java.awt.Dimension(800, 500));
 
         jPanel4.setMaximumSize(new java.awt.Dimension(15, 0));
@@ -147,13 +149,15 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 407, Short.MAX_VALUE)
+            .addGap(0, 209, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel4, java.awt.BorderLayout.EAST);
 
         MainContentPanel.setLayout(new java.awt.BorderLayout(15, 0));
 
+        OrderDetailsPanel.setMinimumSize(new java.awt.Dimension(300, 170));
+        OrderDetailsPanel.setPreferredSize(new java.awt.Dimension(300, 170));
         OrderDetailsPanel.setLayout(new java.awt.GridBagLayout());
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -170,6 +174,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         OrderDetailsPanel.add(jScrollPane1, gridBagConstraints);
 
@@ -184,12 +189,12 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 130, Short.MAX_VALUE)
+            .addGap(0, 61, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 34, Short.MAX_VALUE)
+                    .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(jButton1)
-                    .addGap(0, 35, Short.MAX_VALUE)))
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,6 +211,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.gridy = 3;
         OrderDetailsPanel.add(jPanel2, gridBagConstraints);
 
+        jPanel1.setMinimumSize(new java.awt.Dimension(238, 30));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jLabel10.setText("SubTotal   :");
@@ -221,30 +227,24 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         });
         jPanel5.add(jTextField1);
 
-        jPanel1.add(jPanel5, java.awt.BorderLayout.WEST);
+        jPanel1.add(jPanel5, java.awt.BorderLayout.EAST);
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 68, Short.MAX_VALUE)
-            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel6Layout.createSequentialGroup()
-                    .addGap(0, 19, Short.MAX_VALUE)
-                    .addComponent(quantitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 20, Short.MAX_VALUE)))
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 26, Short.MAX_VALUE)
-            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel6Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(quantitySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        jPanel6.setPreferredSize(new java.awt.Dimension(86, 30));
+        jPanel6.setLayout(new java.awt.GridBagLayout());
 
-        jPanel1.add(jPanel6, java.awt.BorderLayout.EAST);
+        jLabel15.setText("Quantity");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.weightx = 0.2;
+        jPanel6.add(jLabel15, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        jPanel6.add(quantitySpinner, gridBagConstraints);
+
+        jPanel1.add(jPanel6, java.awt.BorderLayout.WEST);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -369,7 +369,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 407, Short.MAX_VALUE)
+            .addGap(0, 209, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.WEST);
@@ -399,6 +399,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
