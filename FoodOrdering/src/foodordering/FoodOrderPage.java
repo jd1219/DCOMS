@@ -5,9 +5,14 @@
  */
 package foodordering;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -17,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 public class FoodOrderPage extends javax.swing.JFrame {
 
     ArrayList<Food> foodList = new ArrayList<>();
+    ArrayList<Food> viewList;
     ArrayList<FoodCategory> categoryList = new ArrayList<>();
     Map<String, String> categoryMap = new HashMap<>();
 
@@ -41,9 +47,14 @@ public class FoodOrderPage extends javax.swing.JFrame {
         categoryList.add(category5);
         //end of dummy data for food category
 
+        FoodCategory allCategory = new FoodCategory("ALL", "All Categories");
+        // Add all selection
+        categoryComboBox.addItem(allCategory);
+
+        //populate combobox + mapping for hashmap
         for (FoodCategory cat : categoryList) {
             categoryMap.put(cat.getCatID(), cat.getCatDesc());
-            categoryListComboBox.addItem(cat.getCatDesc());
+            categoryComboBox.addItem(cat);
         }
 
         //dummy data for food 
@@ -59,7 +70,8 @@ public class FoodOrderPage extends javax.swing.JFrame {
         foodList.add(new Food("FOOD000010", "Cheese", "Cheddar cheese block", "C5", "4.00", "https://picsum.photos/id/13/367/267"));
         //end of dummy data for food
 
-        DefaultTableModel model = (DefaultTableModel) FoodListTable.getModel();
+        viewList = new ArrayList<>(foodList);
+        updateFoodListTable(viewList);
 
         //hide foodID from all list table
         FoodListTable.getColumnModel().getColumn(0).setMinWidth(0); // Hide ID column
@@ -71,17 +83,26 @@ public class FoodOrderPage extends javax.swing.JFrame {
         orderListTable.getColumnModel().getColumn(4).setMaxWidth(0);
         orderListTable.getColumnModel().getColumn(4).setWidth(0);
 
-        String tempFoodArray[] = new String[model.getColumnCount()];
-        for (int i = 0; i < foodList.size(); i++) {
-            Food currentFood = foodList.get(i);
-            tempFoodArray[0] = currentFood.getFoodID();
-            tempFoodArray[1] = currentFood.getFoodName();
-            tempFoodArray[2] = categoryMap.getOrDefault(currentFood.getFoodCatID(), "Unknown Category");
-            tempFoodArray[3] = currentFood.getFoodPrice();
-            model.addRow(tempFoodArray);
-        }
-
         jTextField1.setText("0.00");
+
+        //Register change listener for combobox
+        categoryComboBox.addActionListener(e -> {
+            filterFoodTF.setText("");
+            FoodCategory selectedCategory = (FoodCategory) categoryComboBox.getSelectedItem();
+            viewList.clear();
+            if (selectedCategory != null && selectedCategory.getCatID().equals("ALL")) {
+                viewList.addAll(foodList);
+                updateFoodListTable(viewList);
+            } else {
+
+                for (int i = 0; i < foodList.size(); i++) {
+                    if (foodList.get(i).getFoodCatID().equals(selectedCategory.getCatID())) {
+                        viewList.add(foodList.get(i));
+                    }
+                }
+                updateFoodListTable(viewList);
+            }
+        });
 
         setLocationRelativeTo(null);
     }
@@ -94,10 +115,24 @@ public class FoodOrderPage extends javax.swing.JFrame {
         tempFoodArray[2] = quantity;
         double subtotal = Math.round(Integer.parseInt(quantity) * Double.parseDouble(orderedFood.getFoodPrice()) * 100.0) / 100.0;
         tempFoodArray[3] = String.format("%.2f", subtotal);
-   
+
         tempFoodArray[4] = remarks;
         model.addRow(tempFoodArray);
         jTextField1.setText(String.format("%.2f", Double.parseDouble(jTextField1.getText()) + subtotal));
+    }
+
+    private void updateFoodListTable(ArrayList<Food> x) {
+        DefaultTableModel model = (DefaultTableModel) FoodListTable.getModel();
+        model.setRowCount(0);
+        String tempFoodArray[] = new String[model.getColumnCount()];
+        for (int i = 0; i < x.size(); i++) {
+            Food currentFood = x.get(i);
+            tempFoodArray[0] = currentFood.getFoodID();
+            tempFoodArray[1] = currentFood.getFoodName();
+            tempFoodArray[2] = categoryMap.getOrDefault(currentFood.getFoodCatID(), "Unknown Category");
+            tempFoodArray[3] = currentFood.getFoodPrice();
+            model.addRow(tempFoodArray);
+        }
     }
 
     /**
@@ -128,7 +163,7 @@ public class FoodOrderPage extends javax.swing.JFrame {
         FoodListTable = new javax.swing.JTable();
         FilterBar = new javax.swing.JPanel();
         RightSearchBar = new javax.swing.JPanel();
-        categoryListComboBox = new javax.swing.JComboBox<>();
+        categoryComboBox = new javax.swing.JComboBox<>();
         LeftSearchBar = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         filterFoodTF = new javax.swing.JTextField();
@@ -239,6 +274,11 @@ public class FoodOrderPage extends javax.swing.JFrame {
         CheckoutList.add(jTextField1, gridBagConstraints);
 
         jButton1.setText("Delete");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
@@ -289,12 +329,12 @@ public class FoodOrderPage extends javax.swing.JFrame {
 
         RightSearchBar.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        categoryListComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                categoryListComboBoxActionPerformed(evt);
+        categoryComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                categoryComboBoxItemStateChanged(evt);
             }
         });
-        RightSearchBar.add(categoryListComboBox);
+        RightSearchBar.add(categoryComboBox);
 
         FilterBar.add(RightSearchBar, java.awt.BorderLayout.LINE_END);
 
@@ -307,6 +347,11 @@ public class FoodOrderPage extends javax.swing.JFrame {
         filterFoodTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filterFoodTFActionPerformed(evt);
+            }
+        });
+        filterFoodTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                filterFoodTFKeyPressed(evt);
             }
         });
         LeftSearchBar.add(filterFoodTF);
@@ -326,10 +371,6 @@ public class FoodOrderPage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_filterFoodTFActionPerformed
 
-    private void categoryListComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryListComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_categoryListComboBoxActionPerformed
-
     private void FoodListTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FoodListTableMouseClicked
         // TODO add your handling code here:
         this.setEnabled(false);
@@ -347,6 +388,38 @@ public class FoodOrderPage extends javax.swing.JFrame {
             x.setVisible(true);
         }
     }//GEN-LAST:event_FoodListTableMouseClicked
+
+    private void categoryComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_categoryComboBoxItemStateChanged
+
+    }//GEN-LAST:event_categoryComboBoxItemStateChanged
+
+    private void filterFoodTFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filterFoodTFKeyPressed
+
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            String keyword = filterFoodTF.getText();
+            ArrayList<Food> temp = new ArrayList<>();
+            for (int i = 0; i < viewList.size(); i++) {
+                if (viewList.get(i).getFoodName().toLowerCase().contains(keyword.toLowerCase())) {
+                    temp.add(viewList.get(i));
+
+                }
+            }
+            updateFoodListTable(temp);
+        }
+    }//GEN-LAST:event_filterFoodTFKeyPressed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+         int selectedrow = orderListTable.getSelectedRow();
+        if (selectedrow == -1) {
+            JOptionPane.showMessageDialog(null, "Please select a row for deletion");
+        } else {
+            DefaultTableModel model = (DefaultTableModel) orderListTable.getModel();
+            String pricelabel = jTextField1.getText();
+            jTextField1.setText(String.valueOf(Double.parseDouble(pricelabel) - Double.parseDouble(orderListTable.getValueAt(selectedrow, 3).toString())));
+            model.removeRow(selectedrow);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -393,7 +466,7 @@ public class FoodOrderPage extends javax.swing.JFrame {
     private javax.swing.JPanel MenubarPlaceholder;
     private javax.swing.JScrollPane OrderedItemsTable;
     private javax.swing.JPanel RightSearchBar;
-    private javax.swing.JComboBox<String> categoryListComboBox;
+    private javax.swing.JComboBox<FoodCategory> categoryComboBox;
     private javax.swing.JTextField filterFoodTF;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

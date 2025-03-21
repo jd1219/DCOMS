@@ -29,5 +29,9 @@ public class FoodCategory {
     public String getCatDesc() {
         return catDesc;
     }
+    
+    public String toString(){
+        return this.catDesc;
+    }
 
 }
