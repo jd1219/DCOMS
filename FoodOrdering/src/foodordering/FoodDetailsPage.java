@@ -31,23 +31,27 @@ public class FoodDetailsPage extends javax.swing.JFrame {
     Food viewTarget;
     String viewTargetCat;
     FoodOrderPage mainPage;
-
+    char mode;
     /**
      * Creates new form FoodDetailsPage
      */
-    public FoodDetailsPage(Food viewTarget, String viewTargetCat, FoodOrderPage mainPage) {
+    public FoodDetailsPage(Food viewTarget, String viewTargetCat, FoodOrderPage mainPage, String remarks, int quantity, char mode, String subtotal) {
         initComponents();
         this.viewTarget = viewTarget;
         this.viewTargetCat = viewTargetCat;
         this.mainPage = mainPage;
-
+        this.mode = mode;
+        
+        //set remarks
+        remarksTextArea.setText(remarks);
+        
         //set initial value for price textfield
-        jTextField1.setText(viewTarget.getFoodPrice());
+        jTextField1.setText(subtotal);
 
         //set minimum and starting value for jSpinner
         SpinnerNumberModel model = (SpinnerNumberModel) quantitySpinner.getModel();
         model.setMinimum(1);
-        model.setValue(1);
+        model.setValue(quantity);
 
         // Disable direct text input for jSpinner
         JComponent editor = quantitySpinner.getEditor();
@@ -409,6 +413,9 @@ public class FoodDetailsPage extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         mainPage.setEnabled(true);
+        if(this.mode=='E'){
+            mainPage.removeEditingRow();
+        }
         mainPage.OrderItems(viewTarget, quantitySpinner.getValue().toString(), remarksTextArea.getText());
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed

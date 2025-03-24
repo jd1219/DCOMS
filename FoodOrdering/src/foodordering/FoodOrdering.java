@@ -5,6 +5,11 @@
  */
 package foodordering;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+
 /**
  *
  * @author User
@@ -14,9 +19,11 @@ public class FoodOrdering {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException {
         // TODO code application logic here
-        System.out.println("Testing GitHub");
+        MyInterface Obj = (MyInterface) Naming.lookup("rmi://localhost:8000/add");
+            
+
     }
     
 }

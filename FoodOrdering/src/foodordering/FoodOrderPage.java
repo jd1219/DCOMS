@@ -5,15 +5,22 @@
  */
 package foodordering;
 
+import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -25,11 +32,12 @@ public class FoodOrderPage extends javax.swing.JFrame {
     ArrayList<Food> viewList;
     ArrayList<FoodCategory> categoryList = new ArrayList<>();
     Map<String, String> categoryMap = new HashMap<>();
+    int editingTarget;
 
     /**
      * Creates new form FoodOrderPage
      */
-    public FoodOrderPage() {
+    public FoodOrderPage(String userID) {
         initComponents();
 
         //get all food category from database 
@@ -83,6 +91,11 @@ public class FoodOrderPage extends javax.swing.JFrame {
         orderListTable.getColumnModel().getColumn(4).setMaxWidth(0);
         orderListTable.getColumnModel().getColumn(4).setWidth(0);
 
+        //hide foodid from order list table
+        orderListTable.getColumnModel().getColumn(5).setMinWidth(0); // Hide ID column
+        orderListTable.getColumnModel().getColumn(5).setMaxWidth(0);
+        orderListTable.getColumnModel().getColumn(5).setWidth(0);
+
         jTextField1.setText("0.00");
 
         //Register change listener for combobox
@@ -104,7 +117,18 @@ public class FoodOrderPage extends javax.swing.JFrame {
             }
         });
 
+        //formating of table headers
+        JTableHeader header = orderListTable.getTableHeader();
+        header.setFont(new Font("Tahoma", Font.BOLD, 18));
+        header = FoodListTable.getTableHeader();
+        header.setFont(new Font("Tahoma", Font.BOLD, 18));
+
         setLocationRelativeTo(null);
+
+    }
+
+    public void removeEditingRow() {
+        deleteOrder(editingTarget);
     }
 
     public void OrderItems(Food orderedFood, String quantity, String remarks) {
@@ -117,6 +141,7 @@ public class FoodOrderPage extends javax.swing.JFrame {
         tempFoodArray[3] = String.format("%.2f", subtotal);
 
         tempFoodArray[4] = remarks;
+        tempFoodArray[5] = orderedFood.getFoodID();
         model.addRow(tempFoodArray);
         jTextField1.setText(String.format("%.2f", Double.parseDouble(jTextField1.getText()) + subtotal));
     }
@@ -145,9 +170,6 @@ public class FoodOrderPage extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        MenubarPlaceholder = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
         MainContent = new javax.swing.JPanel();
         CheckoutList = new javax.swing.JPanel();
         OrderedItemsTable = new javax.swing.JScrollPane();
@@ -167,62 +189,33 @@ public class FoodOrderPage extends javax.swing.JFrame {
         LeftSearchBar = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         filterFoodTF = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(1500, 700));
+        setPreferredSize(new java.awt.Dimension(1500, 700));
+        setSize(new java.awt.Dimension(1500, 700));
+        getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        javax.swing.GroupLayout MenubarPlaceholderLayout = new javax.swing.GroupLayout(MenubarPlaceholder);
-        MenubarPlaceholder.setLayout(MenubarPlaceholderLayout);
-        MenubarPlaceholderLayout.setHorizontalGroup(
-            MenubarPlaceholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 805, Short.MAX_VALUE)
-        );
-        MenubarPlaceholderLayout.setVerticalGroup(
-            MenubarPlaceholderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        MainContent.setMinimumSize(new java.awt.Dimension(1400, 550));
+        MainContent.setPreferredSize(new java.awt.Dimension(1400, 550));
+        MainContent.setLayout(new java.awt.GridBagLayout());
 
-        getContentPane().add(MenubarPlaceholder, java.awt.BorderLayout.PAGE_START);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 15, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 368, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(jPanel2, java.awt.BorderLayout.WEST);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 15, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 368, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(jPanel1, java.awt.BorderLayout.EAST);
-
-        MainContent.setLayout(new java.awt.BorderLayout(20, 0));
-
+        CheckoutList.setMinimumSize(new java.awt.Dimension(660, 462));
+        CheckoutList.setPreferredSize(new java.awt.Dimension(660, 462));
         CheckoutList.setLayout(new java.awt.GridBagLayout());
 
+        orderListTable.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         orderListTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Food Name", "Food Category", "Quantity", "Subtotal Price", "Remarks(HIDDEN)"
+                "Food Name", "Food Category", "Quantity", "Subtotal Price", "Remarks(HIDDEN)", "FoodID"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -230,49 +223,64 @@ public class FoodOrderPage extends javax.swing.JFrame {
             }
         });
         orderListTable.setColumnSelectionAllowed(true);
+        orderListTable.setRowHeight(30);
         orderListTable.getTableHeader().setReorderingAllowed(false);
         OrderedItemsTable.setViewportView(orderListTable);
         orderListTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (orderListTable.getColumnModel().getColumnCount() > 0) {
             orderListTable.getColumnModel().getColumn(4).setResizable(false);
+            orderListTable.getColumnModel().getColumn(5).setResizable(false);
         }
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 5;
+        gridBagConstraints.gridheight = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         CheckoutList.add(OrderedItemsTable, gridBagConstraints);
 
+        CheckoutBtn.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         CheckoutBtn.setText("Checkout");
+        CheckoutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CheckoutBtnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         CheckoutList.add(CheckoutBtn, gridBagConstraints);
 
-        jLabel2.setText("Ordered Items");
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel2.setText("Cart");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 5;
         CheckoutList.add(jLabel2, gridBagConstraints);
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel3.setText("Total Price:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 0);
         CheckoutList.add(jLabel3, gridBagConstraints);
 
+        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField1.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 0.1;
         CheckoutList.add(jTextField1, gridBagConstraints);
 
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton1.setText("Delete");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -281,19 +289,32 @@ public class FoodOrderPage extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 6;
         CheckoutList.add(jButton1, gridBagConstraints);
 
+        jButton2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton2.setText("Edit");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 6;
         CheckoutList.add(jButton2, gridBagConstraints);
 
-        MainContent.add(CheckoutList, java.awt.BorderLayout.LINE_END);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 0.1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 25, 0, 0);
+        MainContent.add(CheckoutList, gridBagConstraints);
 
         FoodListView.setLayout(new java.awt.BorderLayout());
 
+        FoodListTable.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         FoodListTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -310,7 +331,8 @@ public class FoodOrderPage extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        FoodListTable.setColumnSelectionAllowed(true);
+        FoodListTable.setCellSelectionEnabled(false);
+        FoodListTable.setRowHeight(30);
         FoodListTable.getTableHeader().setReorderingAllowed(false);
         FoodListTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -329,6 +351,8 @@ public class FoodOrderPage extends javax.swing.JFrame {
 
         RightSearchBar.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
+        categoryComboBox.setEditable(true);
+        categoryComboBox.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         categoryComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 categoryComboBoxItemStateChanged(evt);
@@ -340,10 +364,12 @@ public class FoodOrderPage extends javax.swing.JFrame {
 
         LeftSearchBar.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING));
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("Search");
         LeftSearchBar.add(jLabel1);
 
         filterFoodTF.setColumns(20);
+        filterFoodTF.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         filterFoodTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filterFoodTFActionPerformed(evt);
@@ -360,9 +386,28 @@ public class FoodOrderPage extends javax.swing.JFrame {
 
         FoodListView.add(FilterBar, java.awt.BorderLayout.PAGE_START);
 
-        MainContent.add(FoodListView, java.awt.BorderLayout.CENTER);
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 581, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
 
-        getContentPane().add(MainContent, java.awt.BorderLayout.CENTER);
+        FoodListView.add(jPanel3, java.awt.BorderLayout.SOUTH);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        MainContent.add(FoodListView, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.insets = new java.awt.Insets(50, 50, 50, 50);
+        getContentPane().add(MainContent, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -374,6 +419,7 @@ public class FoodOrderPage extends javax.swing.JFrame {
     private void FoodListTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_FoodListTableMouseClicked
         // TODO add your handling code here:
         this.setEnabled(false);
+        int ordered = -1;
         int selectedRow = FoodListTable.getSelectedRow();
         Food viewTarget = null;
         if (selectedRow != -1) {
@@ -384,7 +430,25 @@ public class FoodOrderPage extends javax.swing.JFrame {
                 }
             }
             String foodCat = FoodListTable.getValueAt(selectedRow, 2).toString();
-            FoodDetailsPage x = new FoodDetailsPage(viewTarget, foodCat, this);
+            String subtotal;
+            FoodDetailsPage x;
+            for (int i = 0; i < orderListTable.getRowCount(); i++) {
+                if (orderListTable.getValueAt(i, 5).toString().equals(foodID.toString())) {
+                    ordered = i;
+                    break;
+                }
+            }
+
+            if (ordered == -1) {
+                subtotal = FoodListTable.getValueAt(selectedRow, 3).toString();
+                x = new FoodDetailsPage(viewTarget, foodCat, this, "", 1, 'C', subtotal);
+
+            } else {
+                subtotal = orderListTable.getValueAt(ordered, 3).toString();
+                String remarks = orderListTable.getValueAt(ordered, 4).toString();
+                int quantity = Integer.parseInt(orderListTable.getValueAt(ordered, 2).toString());
+                x = new FoodDetailsPage(viewTarget, foodCat, this, remarks, quantity, 'E', subtotal);
+            }
             x.setVisible(true);
         }
     }//GEN-LAST:event_FoodListTableMouseClicked
@@ -409,17 +473,63 @@ public class FoodOrderPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_filterFoodTFKeyPressed
 
+    private void deleteOrder(int row) {
+        DefaultTableModel model = (DefaultTableModel) orderListTable.getModel();
+        String pricelabel = jTextField1.getText();
+
+        jTextField1.setText(String.format("%.2f", Double.parseDouble(pricelabel) - Double.parseDouble(orderListTable.getValueAt(row, 3).toString())));
+        model.removeRow(row);
+    }
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         int selectedrow = orderListTable.getSelectedRow();
+        int selectedrow = orderListTable.getSelectedRow();
         if (selectedrow == -1) {
             JOptionPane.showMessageDialog(null, "Please select a row for deletion");
         } else {
-            DefaultTableModel model = (DefaultTableModel) orderListTable.getModel();
-            String pricelabel = jTextField1.getText();
-            jTextField1.setText(String.valueOf(Double.parseDouble(pricelabel) - Double.parseDouble(orderListTable.getValueAt(selectedrow, 3).toString())));
-            model.removeRow(selectedrow);
+            deleteOrder(selectedrow);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        editingTarget = orderListTable.getSelectedRow();
+        if (editingTarget == -1) {
+            JOptionPane.showMessageDialog(null, "Please select a row for modification");
+        } else {
+            this.setEnabled(false);
+            Food viewTarget = null;
+            Object foodID = orderListTable.getValueAt(editingTarget, 5); // Get ID from column 0 (HIDDEN)
+            String remarks = orderListTable.getValueAt(editingTarget, 4).toString();
+            String subtotal = orderListTable.getValueAt(editingTarget, 3).toString();
+            System.out.println(subtotal);
+            for (int i = 0; i < foodList.size(); i++) {
+                if (foodID.toString().equals(foodList.get(i).getFoodID())) {
+                    viewTarget = foodList.get(i);
+                }
+            }
+            String foodCat = orderListTable.getValueAt(editingTarget, 1).toString();
+            int quantity = Integer.parseInt(orderListTable.getValueAt(editingTarget, 2).toString());
+            FoodDetailsPage x = new FoodDetailsPage(viewTarget, foodCat, this, remarks, quantity, 'E', subtotal);
+            x.setVisible(true);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void CheckoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckoutBtnActionPerformed
+        int rowCount = orderListTable.getRowCount();
+        String message = "";
+        if (rowCount == 0) {
+            JOptionPane.showMessageDialog(null, "You have not ordered anything");
+        } else {
+            for (int i = 0; i < rowCount; i++) {
+                message = message + "Item : " + orderListTable.getValueAt(i, 0) + "\nQuantity: " + orderListTable.getValueAt(i, 2) + "\nPrice: " + orderListTable.getValueAt(i, 3) + "\nRemarks: " + orderListTable.getValueAt(i, 4) + "\n===============================\n";
+            }
+            String totalprice = jTextField1.getText();
+            message = message + "Total Price : " + totalprice + "\n";
+        }
+        int finalchoice = JOptionPane.showConfirmDialog(null, message);
+        if (finalchoice == JOptionPane.YES_OPTION) {
+            System.out.println("done");
+        }
+    }//GEN-LAST:event_CheckoutBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -449,7 +559,7 @@ public class FoodOrderPage extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        FoodOrderPage x = new FoodOrderPage();
+        FoodOrderPage x = new FoodOrderPage("USER000001");
         x.setVisible(true);
 
     }
@@ -463,7 +573,6 @@ public class FoodOrderPage extends javax.swing.JFrame {
     private javax.swing.JPanel FoodListView;
     private javax.swing.JPanel LeftSearchBar;
     private javax.swing.JPanel MainContent;
-    private javax.swing.JPanel MenubarPlaceholder;
     private javax.swing.JScrollPane OrderedItemsTable;
     private javax.swing.JPanel RightSearchBar;
     private javax.swing.JComboBox<FoodCategory> categoryComboBox;
@@ -473,8 +582,7 @@ public class FoodOrderPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTable orderListTable;
     // End of variables declaration//GEN-END:variables
