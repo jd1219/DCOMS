@@ -14,9 +14,15 @@ import java.awt.event.WindowEvent;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -33,13 +39,17 @@ public class FoodOrderPage extends javax.swing.JFrame {
     ArrayList<FoodCategory> categoryList = new ArrayList<>();
     Map<String, String> categoryMap = new HashMap<>();
     int editingTarget;
+    OrderServiceInterface connection;
 
     /**
      * Creates new form FoodOrderPage
      */
-    public FoodOrderPage(String userID, MyInterface connection) {
+    public FoodOrderPage(String userID) throws NotBoundException, MalformedURLException, RemoteException {
         initComponents();
 
+        OrderServiceInterface Obj = (OrderServiceInterface) Naming.lookup("rmi://localhost:1099/OrderService");
+        
+        this.connection = Obj;
         //get all food category from database 
         //get all food from database 
         //dummy data for food category
@@ -66,16 +76,16 @@ public class FoodOrderPage extends javax.swing.JFrame {
         }
 
         //dummy data for food 
-        foodList.add(new Food("FOOD000001", "Apple", "A sweet red fruit", "C1", "1.20", "https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg"));
-        foodList.add(new Food("FOOD000002", "Banana", "A yellow elongated fruit", "C1", "0.80", "https://upload.wikimedia.org/wikipedia/commons/8/8a/Banana-Single.jpg"));
-        foodList.add(new Food("FOOD000003", "Carrot", "An orange root vegetable", "C2", "1.00", "https://picsum.photos/id/1/5000/3333"));
-        foodList.add(new Food("FOOD000004", "Broccoli", "A green cruciferous vegetableddddddddddddddddd dsadsa dsadasd sdadasd", "C2", "1.50", "https://upload.wikimedia.org/wikipedia/commons/0/03/Broccoli_and_cross_section_edit.jpg"));
-        foodList.add(new Food("FOOD000005", "Chicken Breast", "Lean white meat", "C3", "5.00", "https://picsum.photos/id/5/367/267"));
-        foodList.add(new Food("FOOD000006", "Salmon", "Fresh Atlantic salmon", "C3", "7.00", "https://picsum.photos/id/29/367/267"));
-        foodList.add(new Food("FOOD000007", "Rice", "White long-grain rice", "C4", "2.00", "https://picsum.photos/id/21/367/267"));
-        foodList.add(new Food("FOOD000008", "Pasta", "Italian-style wheat pasta", "C4", "1.80", "https://picsum.photos/id/12/367/267"));
-        foodList.add(new Food("FOOD000009", "Milk", "Full cream dairy milk", "C5", "3.50", "https://picsum.photos/id/14/367/267"));
-        foodList.add(new Food("FOOD000010", "Cheese", "Cheddar cheese block", "C5", "4.00", "https://picsum.photos/id/13/367/267"));
+        foodList.add(new Food("FOOD000001", "Apple", "A sweet red fruit", "C1", "1.20", "apple.jpeg"));
+        foodList.add(new Food("FOOD000002", "Banana", "A yellow elongated fruit", "C1", "0.80", "banana.jpeg"));
+        foodList.add(new Food("FOOD000003", "Carrot", "An orange root vegetable", "C2", "1.00", "carrot.jpeg"));
+        foodList.add(new Food("FOOD000004", "Broccoli", "A green cruciferous vegetableddddddddddddddddd dsadssssssssssssadasdadasdadsa dssssssssssssaddssssssssssssaddssssssssssssaddssssssssssssaddssssssssssssaddsadasd sdadasd", "C2", "1.50", "broccoli.jpeg"));
+        foodList.add(new Food("FOOD000005", "Chicken Breast", "Lean white meat", "C3", "5.00", "chicken_breast.jpeg"));
+        foodList.add(new Food("FOOD000006", "Salmon", "Fresh Atlantic salmon", "C3", "7.00", "salmon.jpeg"));
+        foodList.add(new Food("FOOD000007", "Rice", "White long-grain rice", "C4", "2.00", "rice.jpeg"));
+        foodList.add(new Food("FOOD000008", "Pasta", "Italian-style wheat pasta", "C4", "1.80", "pasta.jpeg"));
+        foodList.add(new Food("FOOD000009", "Milk", "Full cream dairy milk", "C5", "3.50", "milk.jpeg"));
+        foodList.add(new Food("FOOD000010", "Cheese", "Cheddar cheese block", "C5", "4.00", "cheese.jpeg"));
         //end of dummy data for food
 
         viewList = new ArrayList<>(foodList);
@@ -429,7 +439,7 @@ public class FoodOrderPage extends javax.swing.JFrame {
             }
             String foodCat = FoodListTable.getValueAt(selectedRow, 2).toString();
             String subtotal;
-            FoodDetailsPage x;
+            FoodDetailsPage x = null;
             for (int i = 0; i < orderListTable.getRowCount(); i++) {
                 if (orderListTable.getValueAt(i, 5).toString().equals(foodID.toString())) {
                     ordered = i;
@@ -438,14 +448,22 @@ public class FoodOrderPage extends javax.swing.JFrame {
             }
 
             if (ordered == -1) {
-                subtotal = FoodListTable.getValueAt(selectedRow, 3).toString();
-                x = new FoodDetailsPage(viewTarget, foodCat, this, "", 1, 'C', subtotal);
+                try {
+                    subtotal = FoodListTable.getValueAt(selectedRow, 3).toString();
+                    x = new FoodDetailsPage(viewTarget, foodCat, this, "", 1, 'C', subtotal, this.connection);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(FoodOrderPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
             } else {
                 subtotal = orderListTable.getValueAt(ordered, 3).toString();
                 String remarks = orderListTable.getValueAt(ordered, 4).toString();
                 int quantity = Integer.parseInt(orderListTable.getValueAt(ordered, 2).toString());
-                x = new FoodDetailsPage(viewTarget, foodCat, this, remarks, quantity, 'E', subtotal);
+                try {
+                    x = new FoodDetailsPage(viewTarget, foodCat, this, remarks, quantity, 'E', subtotal, this.connection);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(FoodOrderPage.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             x.setVisible(true);
         }
@@ -506,7 +524,12 @@ public class FoodOrderPage extends javax.swing.JFrame {
             }
             String foodCat = orderListTable.getValueAt(editingTarget, 1).toString();
             int quantity = Integer.parseInt(orderListTable.getValueAt(editingTarget, 2).toString());
-            FoodDetailsPage x = new FoodDetailsPage(viewTarget, foodCat, this, remarks, quantity, 'E', subtotal);
+            FoodDetailsPage x =  null;
+            try {
+                x = new FoodDetailsPage(viewTarget, foodCat, this, remarks, quantity, 'E', subtotal, this.connection);
+            } catch (RemoteException ex) {
+                Logger.getLogger(FoodOrderPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
             x.setVisible(true);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -532,7 +555,6 @@ public class FoodOrderPage extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CheckoutBtn;

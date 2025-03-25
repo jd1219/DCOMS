@@ -21,11 +21,11 @@ public class FoodOrdering {
      */
     public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException {
         // TODO code application logic here
-        MyInterface Obj = (MyInterface) Naming.lookup("rmi://localhost:1099/order");
-        //load login jframe
+        
+    
         
         //login success
-        FoodOrderPage orderPage = new FoodOrderPage("USER000001",Obj);
+        FoodOrderPage orderPage = new FoodOrderPage("USER000001");
         orderPage.setVisible(true);
     }
 

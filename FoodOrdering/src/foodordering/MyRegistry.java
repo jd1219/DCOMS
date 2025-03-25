@@ -16,7 +16,7 @@ import java.rmi.registry.Registry;
 public class MyRegistry {
     public static void main(String[] args)throws RemoteException {
        Registry reg = LocateRegistry.createRegistry(1099);
-       reg.rebind("order", new Server());
+       reg.rebind("OrderService", new OrderServiceImplementation());
        System.out.println("Server running at port 1099");
     }
     

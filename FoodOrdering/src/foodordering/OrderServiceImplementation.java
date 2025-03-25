@@ -18,20 +18,20 @@ import java.util.logging.Logger;
  *
  * @author cleme
  */
-public class Server extends UnicastRemoteObject implements MyInterface{
-    public Server() throws RemoteException
-    {
+public class OrderServiceImplementation extends UnicastRemoteObject implements OrderServiceInterface {
+
+    public OrderServiceImplementation() throws RemoteException {
         super();
     }
 
     @Override
     public byte[] getFoodImage(String imageName) throws RemoteException {
-         File file = new File("images/" + imageName); // Make sure the images are stored here
-         if(!file.exists()){
-             file = new File("images/5216909.png");
-         }
+        File file = new File("images/" + imageName); // Make sure the images are stored here
+        if (!file.exists()) {
+            file = new File("images/5216909.png");
+        }
         try {
-           
+
             FileInputStream fis = new FileInputStream(file);
             byte[] imageData = new byte[(int) file.length()];
             fis.read(imageData);
@@ -42,5 +42,10 @@ public class Server extends UnicastRemoteObject implements MyInterface{
             return null;
         }
     }
-    
+
+    @Override
+    public void add(int x, int y) throws RemoteException {
+        System.out.println(x + y);
+    }
+
 }

@@ -12,6 +12,8 @@ import java.rmi.RemoteException;
  *
  * @author cleme
  */
-interface MyInterface extends Remote{
-     byte[] getFoodImage(String imageName) throws RemoteException;
+interface OrderServiceInterface extends Remote{
+     public byte[] getFoodImage(String imageName) throws RemoteException;
+     
+     public void add(int x, int y) throws RemoteException;
 }
