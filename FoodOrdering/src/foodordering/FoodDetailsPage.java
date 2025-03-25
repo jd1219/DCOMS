@@ -107,7 +107,6 @@ public class FoodDetailsPage extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel4 = new javax.swing.JPanel();
         MainContentPanel = new javax.swing.JPanel();
         OrderQuantityPanel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -138,27 +137,12 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         remarksTextArea = new javax.swing.JTextArea();
-        jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(800, 500));
-        setPreferredSize(new java.awt.Dimension(800, 500));
-
-        jPanel4.setMaximumSize(new java.awt.Dimension(15, 0));
-        jPanel4.setPreferredSize(new java.awt.Dimension(15, 0));
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 15, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 322, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(jPanel4, java.awt.BorderLayout.EAST);
+        setMinimumSize(new java.awt.Dimension(750, 450));
+        setPreferredSize(new java.awt.Dimension(750, 450));
+        setSize(new java.awt.Dimension(750, 450));
+        getContentPane().setLayout(new java.awt.GridBagLayout());
 
         MainContentPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -200,8 +184,9 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         OrderQuantityPanel.add(jPanel2, gridBagConstraints);
 
         jPanel1.setMinimumSize(new java.awt.Dimension(238, 30));
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        jPanel1.setLayout(new java.awt.GridBagLayout());
 
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setText("SubTotal   :");
         jPanel5.add(jLabel10);
 
@@ -215,37 +200,54 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         });
         jPanel5.add(jTextField1);
 
-        jPanel1.add(jPanel5, java.awt.BorderLayout.EAST);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        jPanel1.add(jPanel5, gridBagConstraints);
 
-        jPanel6.setPreferredSize(new java.awt.Dimension(86, 30));
+        jPanel6.setMinimumSize(new java.awt.Dimension(191, 32));
+        jPanel6.setPreferredSize(new java.awt.Dimension(191, 32));
         jPanel6.setLayout(new java.awt.GridBagLayout());
 
-        jLabel15.setText("Quantity");
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel15.setText("Quantity :");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.weightx = 0.2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         jPanel6.add(jLabel15, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         jPanel6.add(quantitySpinner, gridBagConstraints);
 
-        jPanel1.add(jPanel6, java.awt.BorderLayout.WEST);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        jPanel1.add(jPanel6, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         OrderQuantityPanel.add(jPanel1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         MainContentPanel.add(OrderQuantityPanel, gridBagConstraints);
 
         FoodDetailsPanel.setLayout(new java.awt.GridBagLayout());
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText(":");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -253,6 +255,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 0);
         FoodDetailsPanel.add(jLabel3, gridBagConstraints);
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText(":");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -260,6 +263,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 0);
         FoodDetailsPanel.add(jLabel4, gridBagConstraints);
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setText(":");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -267,6 +271,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 0);
         FoodDetailsPanel.add(jLabel5, gridBagConstraints);
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setText(":");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -274,6 +279,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 0);
         FoodDetailsPanel.add(jLabel6, gridBagConstraints);
 
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel9.setText("jLabel9");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -282,6 +288,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 6, 0, 0);
         FoodDetailsPanel.add(jLabel9, gridBagConstraints);
 
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel11.setText("Food Name");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -290,6 +297,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 0);
         FoodDetailsPanel.add(jLabel11, gridBagConstraints);
 
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel12.setText("Food Description");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -298,6 +306,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 0);
         FoodDetailsPanel.add(jLabel12, gridBagConstraints);
 
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel13.setText("Category Name");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -306,6 +315,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 0);
         FoodDetailsPanel.add(jLabel13, gridBagConstraints);
 
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel14.setText("Food Price");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -314,6 +324,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 0);
         FoodDetailsPanel.add(jLabel14, gridBagConstraints);
 
+        jLabel17.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel17.setText("jLabel9");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -322,6 +333,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 6, 0, 0);
         FoodDetailsPanel.add(jLabel17, gridBagConstraints);
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setText("jLabel7");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -330,6 +342,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 6, 0, 0);
         FoodDetailsPanel.add(jLabel7, gridBagConstraints);
 
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel8.setText("jLabel8");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -341,12 +354,15 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         MainContentPanel.add(FoodDetailsPanel, gridBagConstraints);
 
         jLabel2.setText("jLabel2");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
         MainContentPanel.add(jLabel2, gridBagConstraints);
 
@@ -365,6 +381,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
 
         OrderRemarksPanel.setLayout(new java.awt.GridBagLayout());
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel1.setText("Remarks");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -389,24 +406,14 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         MainContentPanel.add(OrderRemarksPanel, gridBagConstraints);
 
-        getContentPane().add(MainContentPanel, java.awt.BorderLayout.CENTER);
-
-        jPanel3.setPreferredSize(new java.awt.Dimension(15, 0));
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 15, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 322, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(jPanel3, java.awt.BorderLayout.WEST);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        getContentPane().add(MainContentPanel, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -450,8 +457,6 @@ public class FoodDetailsPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;

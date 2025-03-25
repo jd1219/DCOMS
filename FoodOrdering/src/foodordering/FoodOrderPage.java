@@ -69,7 +69,7 @@ public class FoodOrderPage extends javax.swing.JFrame {
         foodList.add(new Food("FOOD000001", "Apple", "A sweet red fruit", "C1", "1.20", "https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg"));
         foodList.add(new Food("FOOD000002", "Banana", "A yellow elongated fruit", "C1", "0.80", "https://upload.wikimedia.org/wikipedia/commons/8/8a/Banana-Single.jpg"));
         foodList.add(new Food("FOOD000003", "Carrot", "An orange root vegetable", "C2", "1.00", "https://picsum.photos/id/1/5000/3333"));
-        foodList.add(new Food("FOOD000004", "Broccoli", "A green cruciferous vegetable", "C2", "1.50", "https://upload.wikimedia.org/wikipedia/commons/0/03/Broccoli_and_cross_section_edit.jpg"));
+        foodList.add(new Food("FOOD000004", "Broccoli", "A green cruciferous vegetableddddddddddddddddd dsadsa dsadasd sdadasd", "C2", "1.50", "https://upload.wikimedia.org/wikipedia/commons/0/03/Broccoli_and_cross_section_edit.jpg"));
         foodList.add(new Food("FOOD000005", "Chicken Breast", "Lean white meat", "C3", "5.00", "https://picsum.photos/id/5/367/267"));
         foodList.add(new Food("FOOD000006", "Salmon", "Fresh Atlantic salmon", "C3", "7.00", "https://picsum.photos/id/29/367/267"));
         foodList.add(new Food("FOOD000007", "Rice", "White long-grain rice", "C4", "2.00", "https://picsum.photos/id/21/367/267"));
@@ -123,8 +123,8 @@ public class FoodOrderPage extends javax.swing.JFrame {
         header = FoodListTable.getTableHeader();
         header.setFont(new Font("Tahoma", Font.BOLD, 18));
 
-        setLocationRelativeTo(null);
-
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
     }
 
     public void removeEditingRow() {
@@ -331,7 +331,6 @@ public class FoodOrderPage extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        FoodListTable.setCellSelectionEnabled(false);
         FoodListTable.setRowHeight(30);
         FoodListTable.getTableHeader().setReorderingAllowed(false);
         FoodListTable.addMouseListener(new java.awt.event.MouseAdapter() {
