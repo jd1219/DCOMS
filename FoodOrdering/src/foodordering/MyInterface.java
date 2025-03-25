@@ -6,11 +6,12 @@
 package foodordering;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  *
  * @author cleme
  */
 interface MyInterface extends Remote{
-    
+     byte[] getFoodImage(String imageName) throws RemoteException;
 }

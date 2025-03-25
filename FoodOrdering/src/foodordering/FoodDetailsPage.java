@@ -75,7 +75,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         try {
             URL imageUrl = new URL(viewTarget.getFoodPicURL()); // Replace with your image URL
             ImageIcon originalIcon = new ImageIcon(imageUrl);
-            Image scaledImage = originalIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            Image scaledImage = originalIcon.getImage().getScaledInstance(200, 110, Image.SCALE_SMOOTH);
             ImageIcon resizedIcon = new ImageIcon(scaledImage);
             jLabel2.setIcon(resizedIcon);
             jLabel2.setText("");
@@ -84,10 +84,11 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         }
 
         jLabel17.setText(viewTarget.getFoodName());
-        jLabel9.setText(viewTarget.getFoodDesc());
+        jTextArea1.setText(viewTarget.getFoodDesc());
         jLabel7.setText(viewTargetCat);
         jLabel8.setText(viewTarget.getFoodPrice());
 
+        
         setLocationRelativeTo(null);
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -109,21 +110,18 @@ public class FoodDetailsPage extends javax.swing.JFrame {
 
         MainContentPanel = new javax.swing.JPanel();
         OrderQuantityPanel = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jPanel6 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         quantitySpinner = new javax.swing.JSpinner();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
         FoodDetailsPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -131,8 +129,9 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jTextArea1 = new javax.swing.JTextArea();
         FoodPicturePanel = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
         OrderRemarksPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -150,47 +149,8 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         OrderQuantityPanel.setPreferredSize(new java.awt.Dimension(300, 170));
         OrderQuantityPanel.setLayout(new java.awt.GridBagLayout());
 
-        jButton1.setText("Order");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 61, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jButton1)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 23, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jButton1)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        OrderQuantityPanel.add(jPanel2, gridBagConstraints);
-
-        jPanel1.setMinimumSize(new java.awt.Dimension(238, 30));
-        jPanel1.setLayout(new java.awt.GridBagLayout());
-
-        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel10.setText("SubTotal   :");
-        jPanel5.add(jLabel10);
-
         jTextField1.setColumns(10);
+        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField1.setEnabled(false);
         jTextField1.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -198,53 +158,79 @@ public class FoodDetailsPage extends javax.swing.JFrame {
                 jTextField1ActionPerformed(evt);
             }
         });
-        jPanel5.add(jTextField1);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.ipady = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        OrderQuantityPanel.add(jTextField1, gridBagConstraints);
 
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jButton1.setText("Order");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.insets = new java.awt.Insets(12, 0, 0, 0);
+        OrderQuantityPanel.add(jButton1, gridBagConstraints);
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel10.setText("SubTotal");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        jPanel1.add(jPanel5, gridBagConstraints);
-
-        jPanel6.setMinimumSize(new java.awt.Dimension(191, 32));
-        jPanel6.setPreferredSize(new java.awt.Dimension(191, 32));
-        jPanel6.setLayout(new java.awt.GridBagLayout());
+        OrderQuantityPanel.add(jLabel10, gridBagConstraints);
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel15.setText("Quantity :");
+        jLabel15.setText("Quantity");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        jPanel6.add(jLabel15, gridBagConstraints);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        OrderQuantityPanel.add(jLabel15, gridBagConstraints);
+
+        quantitySpinner.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
-        jPanel6.add(quantitySpinner, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        OrderQuantityPanel.add(quantitySpinner, gridBagConstraints);
 
+        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel16.setText(":");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        jPanel1.add(jPanel6, gridBagConstraints);
+        gridBagConstraints.weightx = 0.2;
+        OrderQuantityPanel.add(jLabel16, gridBagConstraints);
 
+        jLabel18.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel18.setText(":");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        OrderQuantityPanel.add(jPanel1, gridBagConstraints);
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.weightx = 0.2;
+        OrderQuantityPanel.add(jLabel18, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(0, 17, 0, 0);
         MainContentPanel.add(OrderQuantityPanel, gridBagConstraints);
 
+        FoodDetailsPanel.setMaximumSize(new java.awt.Dimension(200, 100));
         FoodDetailsPanel.setLayout(new java.awt.GridBagLayout());
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -260,6 +246,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 0);
         FoodDetailsPanel.add(jLabel4, gridBagConstraints);
 
@@ -279,15 +266,6 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 0);
         FoodDetailsPanel.add(jLabel6, gridBagConstraints);
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel9.setText("jLabel9");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(3, 6, 0, 0);
-        FoodDetailsPanel.add(jLabel9, gridBagConstraints);
-
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel11.setText("Food Name");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -302,7 +280,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 0, 0);
         FoodDetailsPanel.add(jLabel12, gridBagConstraints);
 
@@ -351,6 +329,21 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 6, 0, 0);
         FoodDetailsPanel.add(jLabel8, gridBagConstraints);
 
+        jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(240, 240, 240));
+        jTextArea1.setColumns(10);
+        jTextArea1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextArea1.setLineWrap(true);
+        jTextArea1.setRows(1);
+        jTextArea1.setWrapStyleWord(true);
+        jTextArea1.setOpaque(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 6, 0, 0);
+        FoodDetailsPanel.add(jTextArea1, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -359,22 +352,26 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         MainContentPanel.add(FoodDetailsPanel, gridBagConstraints);
 
         jLabel2.setText("jLabel2");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
-        MainContentPanel.add(jLabel2, gridBagConstraints);
 
         javax.swing.GroupLayout FoodPicturePanelLayout = new javax.swing.GroupLayout(FoodPicturePanel);
         FoodPicturePanel.setLayout(FoodPicturePanelLayout);
         FoodPicturePanelLayout.setHorizontalGroup(
             FoodPicturePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(FoodPicturePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(FoodPicturePanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         FoodPicturePanelLayout.setVerticalGroup(
             FoodPicturePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(FoodPicturePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(FoodPicturePanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         MainContentPanel.add(FoodPicturePanel, new java.awt.GridBagConstraints());
@@ -408,6 +405,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(0, 17, 0, 0);
         MainContentPanel.add(OrderRemarksPanel, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -446,7 +444,9 @@ public class FoodDetailsPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -454,12 +454,8 @@ public class FoodDetailsPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JSpinner quantitySpinner;
     private javax.swing.JTextArea remarksTextArea;
