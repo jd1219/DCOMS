@@ -14,6 +14,7 @@ import java.rmi.RemoteException;
  */
 interface OrderServiceInterface extends Remote{
      public byte[] getFoodImage(String imageName) throws RemoteException;
+     public void createOrder(String orderID, String foodID, String userID , String quantity, String price, String date) throws RemoteException;
      
      public void add(int x, int y) throws RemoteException;
 }

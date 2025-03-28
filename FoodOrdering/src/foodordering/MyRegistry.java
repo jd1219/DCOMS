@@ -8,16 +8,22 @@ package foodordering;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.sql.SQLException;
 
 /**
  *
  * @author cleme
  */
 public class MyRegistry {
-    public static void main(String[] args)throws RemoteException {
-       Registry reg = LocateRegistry.createRegistry(1099);
-       reg.rebind("OrderService", new OrderServiceImplementation());
-       System.out.println("Server running at port 1099");
+
+    public static void main(String[] args) throws RemoteException, SQLException {
+        //initiate DB Connection
+        DBConnection myConn = DBConnection.getInstance();
+        
+        //DCOMS Code
+        Registry reg = LocateRegistry.createRegistry(1099);
+        reg.rebind("OrderService", new OrderServiceImplementation(myConn));
+        System.out.println("Server running at port 1099");
     }
-    
+
 }

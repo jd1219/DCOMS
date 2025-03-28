@@ -5,6 +5,10 @@
  */
 package foodordering;
 
+import java.io.File;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 /**
  *
  * @author ianwd
@@ -12,10 +16,14 @@ package foodordering;
 public class Login extends javax.swing.JFrame {
 
     /**
-     * Creates new form Login
+     * Creates new form LoginF
      */
     public Login() {
         initComponents();
+        File file = new File("images/5216909.png");
+        System.out.println("File exists: " + file.exists());
+        ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+        jLabel5.setIcon(icon);
     }
 
     /**
@@ -49,8 +57,6 @@ public class Login extends javax.swing.JFrame {
         jPanel1.setLayout(null);
 
         jPanel2.setBackground(new java.awt.Color(0, 102, 102));
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foodordering/5216909.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -130,7 +136,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton2);
-        jButton2.setBounds(630, 497, 79, 15);
+        jButton2.setBounds(630, 497, 79, 17);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

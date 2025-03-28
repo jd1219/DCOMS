@@ -548,7 +548,11 @@ public class FoodOrderPage extends javax.swing.JFrame {
         }
         int finalchoice = JOptionPane.showConfirmDialog(null, message);
         if (finalchoice == JOptionPane.YES_OPTION) {
-            System.out.println("done");
+            try {
+                connection.createOrder("ORD000001", "FOOD000001", "USER0000001", "1", "7.00", "2025-04-10");
+            } catch (RemoteException ex) {
+                Logger.getLogger(FoodOrderPage.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_CheckoutBtnActionPerformed
 

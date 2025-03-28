@@ -11,6 +11,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,8 +23,11 @@ import java.util.logging.Logger;
  */
 public class OrderServiceImplementation extends UnicastRemoteObject implements OrderServiceInterface {
 
-    public OrderServiceImplementation() throws RemoteException {
+    DBConnection dbConn;
+
+    public OrderServiceImplementation(DBConnection con) throws RemoteException {
         super();
+        this.dbConn = con;
     }
 
     @Override
@@ -43,9 +49,19 @@ public class OrderServiceImplementation extends UnicastRemoteObject implements O
         }
     }
 
+    
     @Override
     public void add(int x, int y) throws RemoteException {
-        System.out.println(x + y);
+        
+    }
+
+    @Override
+    public void createOrder(String orderID, String foodID, String userID, String quantity, String price, String date) throws RemoteException {
+        try {
+            dbConn.createNewOrders(orderID, foodID, userID, quantity, price, date);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderServiceImplementation.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
