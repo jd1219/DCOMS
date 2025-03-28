@@ -24,6 +24,8 @@ public class Login extends javax.swing.JFrame {
         System.out.println("File exists: " + file.exists());
         ImageIcon icon = new ImageIcon(file.getAbsolutePath());
         jLabel5.setIcon(icon);
+
+        this.setLocationRelativeTo(null);
     }
 
     /**

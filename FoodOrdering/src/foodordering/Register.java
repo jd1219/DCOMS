@@ -16,6 +16,8 @@ public class Register extends javax.swing.JFrame {
      */
     public Register() {
         initComponents();
+
+        this.setLocationRelativeTo(null);
     }
 
     /**

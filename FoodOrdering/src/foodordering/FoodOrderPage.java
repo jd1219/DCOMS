@@ -18,6 +18,10 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +43,7 @@ public class FoodOrderPage extends javax.swing.JFrame {
     ArrayList<FoodCategory> categoryList = new ArrayList<>();
     Map<String, String> categoryMap = new HashMap<>();
     int editingTarget;
+    String currentUser;
     OrderServiceInterface connection;
 
     /**
@@ -47,23 +52,21 @@ public class FoodOrderPage extends javax.swing.JFrame {
     public FoodOrderPage(String userID) throws NotBoundException, MalformedURLException, RemoteException {
         initComponents();
 
+        this.currentUser = userID;
+
         OrderServiceInterface Obj = (OrderServiceInterface) Naming.lookup("rmi://localhost:1099/OrderService");
-        
+
         this.connection = Obj;
         //get all food category from database 
         //get all food from database 
-        //dummy data for food category
-        FoodCategory category1 = new FoodCategory("C1", "Fruits");
-        FoodCategory category2 = new FoodCategory("C2", "Vegetables");
-        FoodCategory category3 = new FoodCategory("C3", "Dairy");
-        FoodCategory category4 = new FoodCategory("C4", "Meat");
-        FoodCategory category5 = new FoodCategory("C5", "Drinks");
-        categoryList.add(category1);
-        categoryList.add(category2);
-        categoryList.add(category3);
-        categoryList.add(category4);
-        categoryList.add(category5);
-        //end of dummy data for food category
+        
+        ArrayList <String []> fetchedFoodList = connection.getAllFood();
+        ArrayList <String []> fetchedCategoryList = connection.getAllFoodCategory();
+        
+        for(int i = 0 ; i<fetchedCategoryList.size(); i++){
+            FoodCategory temp = new FoodCategory(fetchedCategoryList.get(i)[0], fetchedCategoryList.get(i)[1]);
+            categoryList.add(temp);
+        }
 
         FoodCategory allCategory = new FoodCategory("ALL", "All Categories");
         // Add all selection
@@ -75,18 +78,11 @@ public class FoodOrderPage extends javax.swing.JFrame {
             categoryComboBox.addItem(cat);
         }
 
-        //dummy data for food 
-        foodList.add(new Food("FOOD000001", "Apple", "A sweet red fruit", "C1", "1.20", "apple.jpeg"));
-        foodList.add(new Food("FOOD000002", "Banana", "A yellow elongated fruit", "C1", "0.80", "banana.jpeg"));
-        foodList.add(new Food("FOOD000003", "Carrot", "An orange root vegetable", "C2", "1.00", "carrot.jpeg"));
-        foodList.add(new Food("FOOD000004", "Broccoli", "A green cruciferous vegetableddddddddddddddddd dsadssssssssssssadasdadasdadsa dssssssssssssaddssssssssssssaddssssssssssssaddssssssssssssaddssssssssssssaddsadasd sdadasd", "C2", "1.50", "broccoli.jpeg"));
-        foodList.add(new Food("FOOD000005", "Chicken Breast", "Lean white meat", "C3", "5.00", "chicken_breast.jpeg"));
-        foodList.add(new Food("FOOD000006", "Salmon", "Fresh Atlantic salmon", "C3", "7.00", "salmon.jpeg"));
-        foodList.add(new Food("FOOD000007", "Rice", "White long-grain rice", "C4", "2.00", "rice.jpeg"));
-        foodList.add(new Food("FOOD000008", "Pasta", "Italian-style wheat pasta", "C4", "1.80", "pasta.jpeg"));
-        foodList.add(new Food("FOOD000009", "Milk", "Full cream dairy milk", "C5", "3.50", "milk.jpeg"));
-        foodList.add(new Food("FOOD000010", "Cheese", "Cheddar cheese block", "C5", "4.00", "cheese.jpeg"));
-        //end of dummy data for food
+     
+        for(int i = 0 ; i<fetchedFoodList.size(); i++){
+            Food temp = new Food(fetchedFoodList.get(i)[0], fetchedFoodList.get(i)[1], fetchedFoodList.get(i)[2], fetchedFoodList.get(i)[3], fetchedFoodList.get(i)[4], fetchedFoodList.get(i)[5]);
+            foodList.add(temp);
+        }
 
         viewList = new ArrayList<>(foodList);
         updateFoodListTable(viewList);
@@ -524,7 +520,7 @@ public class FoodOrderPage extends javax.swing.JFrame {
             }
             String foodCat = orderListTable.getValueAt(editingTarget, 1).toString();
             int quantity = Integer.parseInt(orderListTable.getValueAt(editingTarget, 2).toString());
-            FoodDetailsPage x =  null;
+            FoodDetailsPage x = null;
             try {
                 x = new FoodDetailsPage(viewTarget, foodCat, this, remarks, quantity, 'E', subtotal, this.connection);
             } catch (RemoteException ex) {
@@ -548,11 +544,19 @@ public class FoodOrderPage extends javax.swing.JFrame {
         }
         int finalchoice = JOptionPane.showConfirmDialog(null, message);
         if (finalchoice == JOptionPane.YES_OPTION) {
-            try {
-                connection.createOrder("ORD000001", "FOOD000001", "USER0000001", "1", "7.00", "2025-04-10");
-            } catch (RemoteException ex) {
-                Logger.getLogger(FoodOrderPage.class.getName()).log(Level.SEVERE, null, ex);
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = now.format(formatter);
+            ArrayList<String[]> orderList = new ArrayList<>();
+            for (int i = 0; i < rowCount; i++) {
+                String[] temp = {orderListTable.getValueAt(i, 5).toString(), this.currentUser, orderListTable.getValueAt(i, 2).toString(), orderListTable.getValueAt(i, 3).toString(), formattedDateTime, orderListTable.getValueAt(i, 4).toString()};
+                orderList.add(temp);
             }
+            CreateOrderThread createOrderRunnable = new CreateOrderThread(orderList, connection);
+            Thread createOrderThread = new Thread(createOrderRunnable);
+            createOrderThread.run();
+            JOptionPane.showMessageDialog(null, "Ordered Successful");
+            //this.dispose();
         }
     }//GEN-LAST:event_CheckoutBtnActionPerformed
 

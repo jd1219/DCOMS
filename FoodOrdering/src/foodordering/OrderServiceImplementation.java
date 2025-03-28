@@ -14,6 +14,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,19 +50,49 @@ public class OrderServiceImplementation extends UnicastRemoteObject implements O
         }
     }
 
-    
     @Override
     public void add(int x, int y) throws RemoteException {
-        
+
+    }
+
+    public String obtainNewOrderNumber() throws SQLException {
+        return dbConn.fetchLatestOrderNumber(); // Call the method that queries D
     }
 
     @Override
-    public void createOrder(String orderID, String foodID, String userID, String quantity, String price, String date) throws RemoteException {
+    public void createOrder(ArrayList<String[]> orderList) throws RemoteException {
         try {
-            dbConn.createNewOrders(orderID, foodID, userID, quantity, price, date);
+            String newOrderNumber = obtainNewOrderNumber();
+            for (int i = 0; i < orderList.size(); i++) {
+                dbConn.createNewOrders(newOrderNumber, orderList.get(i)[0], orderList.get(i)[1], orderList.get(i)[2], orderList.get(i)[3], orderList.get(i)[4], orderList.get(i)[5]);
+                System.out.println("Record: [" + newOrderNumber + ", " + orderList.get(i)[0] + ", " + orderList.get(i)[1] + ", " + orderList.get(i)[2] + ", " + orderList.get(i)[3] + ", " + orderList.get(i)[4] +", " +orderList.get(i)[5]+ "] Added");
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(OrderServiceImplementation.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    @Override
+    public ArrayList<String[]> getAllFood() throws RemoteException {
+        ArrayList<String []> fetchedFoodItems = new ArrayList<>();
+        try {
+            fetchedFoodItems = dbConn.getAllFood();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderServiceImplementation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return fetchedFoodItems;
+    }
+
+    @Override
+    public ArrayList<String[]> getAllFoodCategory() throws RemoteException {
+        ArrayList<String []> fetchedFoodCategory = new ArrayList<>();
+        try {
+            fetchedFoodCategory = dbConn.getAllFoodCategory();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderServiceImplementation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return fetchedFoodCategory;
     }
 
 }

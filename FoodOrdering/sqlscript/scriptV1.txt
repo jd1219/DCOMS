@@ -1,0 +1,68 @@
+CREATE TABLE CATEGORY (
+    CATEGORY_ID VARCHAR(10) NOT NULL PRIMARY KEY,
+    CATEGORY_DESCRIPTION VARCHAR(255)  -- Allows NULL values
+);
+
+CREATE TABLE USERS (
+    USER_ID VARCHAR(10) NOT NULL PRIMARY KEY,
+    ID VARCHAR(100) NOT NULL,
+    IC_PASSPORT VARCHAR(100) NOT NULL,
+    PASS VARCHAR(100) NOT NULL,
+    FIRST_NAME VARCHAR(100) NOT NULL,
+    LAST_NAME VARCHAR(100) NOT NULL,
+    EMAIL VARCHAR(100) NOT NULL,
+    ACCOUNT_TYPE VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE FOOD (
+    FOOD_ID VARCHAR(10) NOT NULL PRIMARY KEY,
+    FOOD_NAME VARCHAR(100) NOT NULL,
+    FOOD_DESCRIPTION VARCHAR(255) NOT NULL,
+    CATEGORY_ID VARCHAR(10) NOT NULL,
+    FOOD_PRICE VARCHAR(7) NOT NULL,
+    FOOD_PICTURE VARCHAR(255) NOT NULL,
+    CONSTRAINT FK_CATEGORY FOREIGN KEY (CATEGORY_ID) REFERENCES CATEGORY(CATEGORY_ID)
+);
+
+
+
+CREATE TABLE ORDERS (
+    ORDER_ID VARCHAR(9) NOT NULL,
+    FOOD_ID VARCHAR(10) NOT NULL,
+    USER_ID VARCHAR(10) NOT NULL,
+    QUANTITY VARCHAR(3) NOT NULL,
+    SUBTOTAL VARCHAR(5) NOT NULL,
+    DATE VARCHAR(25) NOT NULL,
+    REMARKS VARCHAR(255),  -- Allows NULL values
+    PRIMARY KEY (ORDER_ID, FOOD_ID),  -- Composite primary key
+    CONSTRAINT FK_FOOD FOREIGN KEY (FOOD_ID) REFERENCES FOOD(FOOD_ID),
+    CONSTRAINT FK_USER FOREIGN KEY (USER_ID) REFERENCES USERS(USER_ID)  -- Foreign key for USER_ID
+);
+
+
+INSERT INTO CATEGORY (CATEGORY_ID, CATEGORY_DESCRIPTION) VALUES 
+('CAT0000001', 'Fruits'),
+('CAT0000002', 'Vegetables'),
+('CAT0000003', 'Dairy'),
+('CAT0000004', 'Meat'),
+('CAT0000005', 'Drinks');
+
+INSERT INTO USERS (USER_ID, ID, IC_PASSPORT, PASS, FIRST_NAME, LAST_NAME, EMAIL, ACCOUNT_TYPE) 
+VALUES 
+('USER000001', 'ID001', 'IC001', 'pass123', 'John', 'Doe', 'john.doe@example.com', 'ADMIN'),
+('USER000002', 'ID002', 'IC002', 'pass456', 'Jane', 'Smith', 'jane.smith@example.com', 'CUSTOMER'),
+('USER000003', 'ID003', 'IC003', 'pass789', 'Alice', 'Brown', 'alice.brown@example.com', 'CUSTOMER');
+
+INSERT INTO FOOD (FOOD_ID, FOOD_NAME, FOOD_DESCRIPTION, CATEGORY_ID, FOOD_PRICE, FOOD_PICTURE) VALUES
+('FOOD000001', 'Apple', 'A sweet red fruit', 'CAT0000001', '1.20', 'apple.jpeg'),
+('FOOD000002', 'Banana', 'A yellow elongated fruit', 'CAT0000001', '0.80', 'banana.jpeg'),
+('FOOD000003', 'Carrot', 'An orange root vegetable', 'CAT0000002', '1.00', 'carrot.jpeg'),
+('FOOD000004', 'Broccoli', 'A green cruciferous vegetable', 'CAT0000002', '1.50', 'broccoli.jpeg'),
+('FOOD000005', 'Chicken Breast', 'Lean white meat', 'CAT0000003', '5.00', 'chicken_breast.jpeg'),
+('FOOD000006', 'Salmon', 'Fresh Atlantic salmon', 'CAT0000003', '7.00', 'salmon.jpeg'),
+('FOOD000007', 'Rice', 'White long-grain rice', 'CAT0000004', '2.00', 'rice.jpeg'),
+('FOOD000008', 'Pasta', 'Italian-Style wheat pasta', 'CAT0000004', '1.80', 'pasta.jpeg'),
+('FOOD000009', 'Milk', 'Full cream dairy milk', 'CAT0000005', '3.50', 'milk.jpeg'),
+('FOOD000010', 'Cheese', 'Cheddar cheese block', 'CAT0000005', '4.00', 'cheese.jpeg');
+
+
