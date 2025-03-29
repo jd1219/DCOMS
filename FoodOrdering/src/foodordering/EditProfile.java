@@ -28,6 +28,7 @@ public class EditProfile extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -44,18 +45,35 @@ public class EditProfile extends javax.swing.JFrame {
         jTextField7 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("PROFILE");
 
         jPanel2.setBackground(new java.awt.Color(0, 102, 102));
+
+        jButton1.setBackground(new java.awt.Color(0, 102, 102));
+        jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 102, 102));
+        jButton1.setText("Edit");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 175, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(48, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(79, 79, 79))
         );
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
@@ -235,6 +253,10 @@ public class EditProfile extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField7ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -271,6 +293,7 @@ public class EditProfile extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -280,9 +303,6 @@ public class EditProfile extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
