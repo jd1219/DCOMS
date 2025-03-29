@@ -6,8 +6,14 @@
 package foodordering;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -161,9 +167,43 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        String user_id = jTextField2.getText();
+        String user_password = jPasswordField1.getText();
+
+        if (authenticateStaff(user_id, user_password)) {
+            JOptionPane.showMessageDialog(this, "Login successful", "Success", JOptionPane.INFORMATION_MESSAGE);
+            Register frame = new Register();
+            frame.setVisible(true);
+            this.dispose(); // Close the login frame
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
+        }          
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private boolean authenticateStaff(String user_id, String user_password) {
+        String url = "jdbc:derby://localhost:1527/FoodOrdering";
+        String dbUser = "nyahalo";
+        String dbPassword = "nyahalo";
+        boolean isAuthenticated = false;
+
+        try (Connection conn = DriverManager.getConnection(url, dbUser, dbPassword);
+             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM USERS WHERE ID = ? AND PASS = ?")) {
+            
+            pstmt.setString(1, user_id);
+            pstmt.setString(2, user_password);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    isAuthenticated = true; // If a record is found, authentication is successful
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return isAuthenticated;
+    }
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
