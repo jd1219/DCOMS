@@ -5,6 +5,7 @@
  */
 package foodordering;
 
+import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
  */
 public class DBConnection {
 
+    //SINGLETON CLASS
     static DBConnection instance;
     Connection conn;
 
@@ -33,11 +35,30 @@ public class DBConnection {
         }
         return instance;
     }
+    //SINGLETON CLASS END
 
+    //USER FUNCTION
+    public boolean authenticate(String userId, String password) throws RemoteException, SQLException {
+        boolean isAuthenticated = false;
+
+        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM USERS WHERE id = ? AND pass = ?");
+
+        pstmt.setString(1, userId);
+        pstmt.setString(2, password);
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            isAuthenticated = true;
+        }
+        
+        return isAuthenticated;
+    }
+
+    //ORDER FUNCTION
     public void createNewOrders(String orderID, String foodID, String userID, String quantity, String price, String date, String remarks) throws SQLException {
         String sql = "INSERT INTO ORDERS VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement pstmt = conn.prepareStatement(sql);
-    
+
         pstmt.setString(1, orderID);
         pstmt.setString(2, foodID);
         pstmt.setString(3, userID);
@@ -76,7 +97,6 @@ public class DBConnection {
         while (result.next()) {
             String cat_ID = result.getString("CATEGORY_ID");
             String cat_Desc = result.getString("CATEGORY_DESCRIPTION");
-           
 
             String[] temp = {cat_ID, cat_Desc};
             foodCategoryList.add(temp);

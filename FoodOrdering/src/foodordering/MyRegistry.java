@@ -23,6 +23,7 @@ public class MyRegistry {
         //DCOMS Code
         Registry reg = LocateRegistry.createRegistry(1099);
         reg.rebind("OrderService", new OrderServiceImplementation(myConn));
+        reg.rebind("UserService", new UserServiceImplementation(myConn));
         System.out.println("Server running at port 1099");
     }
 

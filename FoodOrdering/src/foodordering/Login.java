@@ -6,12 +6,17 @@
 package foodordering;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -25,13 +30,14 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form LoginF
      */
-    public Login() {
+    UserServiceInterface authService;
+    public Login() throws NotBoundException, MalformedURLException, RemoteException {
         initComponents();
         File file = new File("images/5216909.png");
-        System.out.println("File exists: " + file.exists());
         ImageIcon icon = new ImageIcon(file.getAbsolutePath());
         jLabel5.setIcon(icon);
-
+        authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
+        
         this.setLocationRelativeTo(null);
     }
 
@@ -168,12 +174,12 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String userId = jTextField2.getText();
-        String password = jPasswordField1.getText();
-
+        char[] passwordInput = jPasswordField1.getPassword();
+        String password = new String(passwordInput);
         try {
             // Lookup RMI Service
-            UserServiceInterface authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1098/UserService");
             
+
             if (authService.authenticate(userId, password)) {
                 JOptionPane.showMessageDialog(this, "Login successful", "Success", JOptionPane.INFORMATION_MESSAGE);
                 CustHomePage homepage = new CustHomePage();
@@ -227,7 +233,15 @@ public class Login extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Login().setVisible(true);
+                try {
+                    new Login().setVisible(true);
+                } catch (NotBoundException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

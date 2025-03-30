@@ -16,6 +16,8 @@ public class CustHomePage extends javax.swing.JFrame {
      */
     public CustHomePage() {
         initComponents();
+        
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -61,7 +63,11 @@ public class CustHomePage extends javax.swing.JFrame {
                 .addGap(45, 45, 45))
         );
 
-        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\ianwd\\Downloads\\OrderFood.png")); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 102, 102));
@@ -79,8 +85,6 @@ public class CustHomePage extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 285, Short.MAX_VALUE)
         );
-
-        jButton2.setIcon(new javax.swing.ImageIcon("C:\\Users\\ianwd\\Downloads\\EditProfile.png")); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 102, 102));
@@ -138,6 +142,10 @@ public class CustHomePage extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

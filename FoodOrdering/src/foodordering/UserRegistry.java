@@ -22,7 +22,7 @@ public class UserRegistry {
         
         //DCOMS Code
         Registry reg = LocateRegistry.createRegistry(1098);
-        reg.rebind("UserService", new OrderServiceImplementation(myConn));
+        
         System.out.println("Server running at port 1098");
     }
 

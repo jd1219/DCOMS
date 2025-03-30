@@ -21,12 +21,9 @@ public class FoodOrdering {
      */
     public static void main(String[] args) throws NotBoundException, MalformedURLException, RemoteException {
         // TODO code application logic here
-        
-    
-        
-        //login success
-        FoodOrderPage orderPage = new FoodOrderPage("USER000001");
-        orderPage.setVisible(true);
+
+        Login loginPage = new Login();
+        loginPage.setVisible(true);
     }
 
 }

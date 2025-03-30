@@ -12,46 +12,34 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author ianwd
  */
 public class UserServiceImplementation extends UnicastRemoteObject implements UserServiceInterface {
-    private static final String DB_URL = "jdbc:derby://localhost:1527/FoodOrdering";
-    private static final String DB_USER = "nyahalo";
-    private static final String DB_PASSWORD = "nyahalo";
 
-    public UserServiceImplementation() throws RemoteException {
+
+    public DBConnection connection;
+    
+    public UserServiceImplementation(DBConnection connection) throws RemoteException {
         super();
+        this.connection = connection;
+        
     }
 
     @Override
     public boolean authenticate(String userId, String password) throws RemoteException {
-        boolean isAuthenticated = false;
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Staff WHERE staff_name = ? AND password = ?")) {
-
-            pstmt.setString(1, userId);
-            pstmt.setString(2, password);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                isAuthenticated = true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return isAuthenticated;
-    }
-
-    public static void main(String[] args) {
+        boolean result = false;
         try {
-            UserServiceImplementation service = new UserServiceImplementation();
-            java.rmi.Naming.rebind("rmi://localhost:1098/UserService", service);
-            System.out.println("User Service is running...");
-        } catch (Exception e) {
-            e.printStackTrace();
+            result = connection.authenticate(userId, password);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserServiceImplementation.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return result;
     }
+
 }

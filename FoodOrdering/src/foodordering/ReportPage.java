@@ -103,6 +103,11 @@ public class ReportPage extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton1.setText("SALES SUMMARY");
         jButton1.setPreferredSize(new java.awt.Dimension(500, 100));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         bottomPanel.add(jButton1, new java.awt.GridBagConstraints());
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -167,6 +172,10 @@ public class ReportPage extends javax.swing.JFrame {
         AdminHomePage amh = new AdminHomePage();
         amh.setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
