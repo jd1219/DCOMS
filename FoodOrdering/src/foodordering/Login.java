@@ -6,6 +6,7 @@
 package foodordering;
 
 import java.io.File;
+import java.rmi.Naming;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -43,7 +44,6 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jColorChooser1 = new javax.swing.JColorChooser();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -167,43 +167,28 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String user_id = jTextField2.getText();
-        String user_password = jPasswordField1.getText();
+        String userId = jTextField2.getText();
+        String password = jPasswordField1.getText();
 
-        if (authenticateStaff(user_id, user_password)) {
-            JOptionPane.showMessageDialog(this, "Login successful", "Success", JOptionPane.INFORMATION_MESSAGE);
-            Register frame = new Register();
-            frame.setVisible(true);
-            this.dispose(); // Close the login frame
-        } else {
-            JOptionPane.showMessageDialog(this, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
-        }          
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private boolean authenticateStaff(String user_id, String user_password) {
-        String url = "jdbc:derby://localhost:1527/FoodOrdering";
-        String dbUser = "nyahalo";
-        String dbPassword = "nyahalo";
-        boolean isAuthenticated = false;
-
-        try (Connection conn = DriverManager.getConnection(url, dbUser, dbPassword);
-             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM USERS WHERE ID = ? AND PASS = ?")) {
+        try {
+            // Lookup RMI Service
+            UserServiceInterface authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1098/UserService");
             
-            pstmt.setString(1, user_id);
-            pstmt.setString(2, user_password);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    isAuthenticated = true; // If a record is found, authentication is successful
-                }
+            if (authService.authenticate(userId, password)) {
+                JOptionPane.showMessageDialog(this, "Login successful", "Success", JOptionPane.INFORMATION_MESSAGE);
+                CustHomePage homepage = new CustHomePage();
+                homepage.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Connection Error", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        return isAuthenticated;
-    }
-    
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -250,7 +235,6 @@ public class Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
