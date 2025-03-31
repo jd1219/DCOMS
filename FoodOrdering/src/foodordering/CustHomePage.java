@@ -5,17 +5,28 @@
  */
 package foodordering;
 
+import java.io.File;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author ianwd
  */
 public class CustHomePage extends javax.swing.JFrame {
+    private String userId;
 
     /**
      * Creates new form CustHomePage
      */
-    public CustHomePage() {
+    public CustHomePage(String userId) {
+        this.userId = userId;
         initComponents();
+        File file = new File("images/EditProfile.png");
+        File file2 = new File("images/OrderFood.png");
+        ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+        ImageIcon icon2 = new ImageIcon(file2.getAbsolutePath());
+        jButton2.setIcon(icon);
+        jButton1.setIcon(icon2);
         
         setLocationRelativeTo(null);
     }
@@ -177,7 +188,7 @@ public class CustHomePage extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CustHomePage().setVisible(true);
+                new CustHomePage("testUser").setVisible(true);
             }
         });
     }

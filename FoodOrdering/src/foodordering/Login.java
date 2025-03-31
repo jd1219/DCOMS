@@ -31,11 +31,13 @@ public class Login extends javax.swing.JFrame {
      * Creates new form LoginF
      */
     UserServiceInterface authService;
+    
     public Login() throws NotBoundException, MalformedURLException, RemoteException {
         initComponents();
         File file = new File("images/5216909.png");
         ImageIcon icon = new ImageIcon(file.getAbsolutePath());
         jLabel5.setIcon(icon);
+        
         authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
         
         this.setLocationRelativeTo(null);
@@ -176,27 +178,35 @@ public class Login extends javax.swing.JFrame {
         String userId = jTextField2.getText();
         char[] passwordInput = jPasswordField1.getPassword();
         String password = new String(passwordInput);
+        String[] userData = null;
+        
         try {
-            // Lookup RMI Service
-            
-
-            if (authService.authenticate(userId, password)) {
-                JOptionPane.showMessageDialog(this, "Login successful", "Success", JOptionPane.INFORMATION_MESSAGE);
-                CustHomePage homepage = new CustHomePage();
-                homepage.setVisible(true);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Connection Error", "Error", JOptionPane.ERROR_MESSAGE);
+            userData = authService.authenticate(userId, password);
+        } catch (RemoteException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        if (userData != null) {
+            String loggedInUserId = userData[0]; // Get user ID
+            String accountType = userData[1];    // Get account type
 
+            JOptionPane.showMessageDialog(this, "Login successful!\nAccount Type: " + accountType, "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            if (accountType.equals("ADMIN")) {
+                new AdminHomePage(loggedInUserId).setVisible(true);
+            } else {
+                new CustHomePage(loggedInUserId).setVisible(true);
+            }
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        Register register = new Register();
+        register.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed

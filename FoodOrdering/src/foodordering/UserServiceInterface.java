@@ -13,5 +13,5 @@ import java.rmi.RemoteException;
  * @author ianwd
  */
 public interface UserServiceInterface extends Remote{
-    boolean authenticate(String userId, String password) throws RemoteException;
+    String[] authenticate(String userId, String password) throws RemoteException;
 }

@@ -10,11 +10,13 @@ package foodordering;
  * @author ianwd
  */
 public class AdminHomePage extends javax.swing.JFrame {
+    private String userId;
 
     /**
      * Creates new form CustHomePage
      */
-    public AdminHomePage() {
+    public AdminHomePage(String userId) {
+        this.userId = userId;
         initComponents();
 
         this.setLocationRelativeTo(null);
@@ -236,7 +238,7 @@ public class AdminHomePage extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminHomePage().setVisible(true);
+                new AdminHomePage("test").setVisible(true);
             }
         });
     }

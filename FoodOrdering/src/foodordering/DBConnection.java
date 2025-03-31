@@ -38,20 +38,21 @@ public class DBConnection {
     //SINGLETON CLASS END
 
     //USER FUNCTION
-    public boolean authenticate(String userId, String password) throws RemoteException, SQLException {
-        boolean isAuthenticated = false;
+    public String[] authenticate(String userId, String password) throws RemoteException, SQLException {
+        String[] userData = null;
 
-        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM USERS WHERE id = ? AND pass = ?");
+        String query = "SELECT id, account_type FROM USERS WHERE id = ? AND pass = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, userId);
+            pstmt.setString(2, password);
 
-        pstmt.setString(1, userId);
-        pstmt.setString(2, password);
-        ResultSet rs = pstmt.executeQuery();
-
-        if (rs.next()) {
-            isAuthenticated = true;
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    userData = new String[]{rs.getString("id"), rs.getString("account_type")};
+                }
+            }
         }
-        
-        return isAuthenticated;
+        return userData; // Returns null if authentication fails
     }
 
     //ORDER FUNCTION

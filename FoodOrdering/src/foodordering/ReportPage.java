@@ -169,8 +169,8 @@ public class ReportPage extends javax.swing.JFrame {
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        AdminHomePage amh = new AdminHomePage();
-        amh.setVisible(true);
+//        AdminHomePage amh = new AdminHomePage();
+//        amh.setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

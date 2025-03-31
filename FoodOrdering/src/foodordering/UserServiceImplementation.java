@@ -31,15 +31,15 @@ public class UserServiceImplementation extends UnicastRemoteObject implements Us
     }
 
     @Override
-    public boolean authenticate(String userId, String password) throws RemoteException {
-        boolean result = false;
+    public String[] authenticate(String userId, String password) throws RemoteException {
+        String[] userData = null;
         try {
-            result = connection.authenticate(userId, password);
+            userData = connection.authenticate(userId, password);
             
         } catch (SQLException ex) {
             Logger.getLogger(UserServiceImplementation.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return result;
+        return userData;
     }
 
 }
