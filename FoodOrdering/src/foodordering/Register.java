@@ -5,17 +5,30 @@
  */
 package foodordering;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author ianwd
  */
 public class Register extends javax.swing.JFrame {
+    
+    UserServiceInterface authService;
 
     /**
      * Creates new form Register
      */
-    public Register() {
+    public Register() throws NotBoundException, MalformedURLException, RemoteException {
         initComponents();
+        
+        authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
 
         this.setLocationRelativeTo(null);
     }
@@ -271,7 +284,35 @@ public class Register extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        String firstName = jTextField2.getText();
+        String lastName = jTextField3.getText();
+        String email = jTextField4.getText();
+        String ic = jTextField5.getText();
+        String userId2 = jTextField6.getText();
+        char[] passwordInput = jPasswordField1.getPassword();
+        String password = new String(passwordInput);
+
+        try {
+            // Call the RMI method from the server layer
+            authService.register(firstName, lastName, email, ic, userId2, password);
+
+            // Show a success message
+            JOptionPane.showMessageDialog(this, "Registration successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            try {
+                // Optionally redirect to login page
+                new Login().setVisible(true);
+            } catch (NotBoundException ex) {
+                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            this.dispose();  // Close registration form
+
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Remote connection error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
@@ -308,7 +349,15 @@ public class Register extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Register().setVisible(true);
+                try {
+                    new Register().setVisible(true);
+                } catch (NotBoundException ex) {
+                    Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

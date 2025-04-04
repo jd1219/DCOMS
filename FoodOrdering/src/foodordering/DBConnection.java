@@ -54,6 +54,78 @@ public class DBConnection {
         }
         return userData; // Returns null if authentication fails
     }
+    
+    public String generateUserId() throws SQLException {
+        String sql = "SELECT USER_ID FROM USERS ORDER BY CAST(SUBSTRING(USER_ID, 5) AS INT) DESC FETCH FIRST 1 ROWS ONLY";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        ResultSet result = psmt.executeQuery();
+
+        if (result.next()) {
+            String latestUserId = result.getString("USER_ID");
+            StringBuilder sb = new StringBuilder(latestUserId);
+            int index = sb.length() - 1;
+
+            // Traverse the numeric part of the USER_ID and increment it
+            while (index >= 4 && Character.isDigit(sb.charAt(index))) {
+                int digit = Character.getNumericValue(sb.charAt(index));
+                digit++;
+                if (digit > 9) {
+                    sb.setCharAt(index, '0'); // Carry-over, set current digit to 0
+                    index--; // Move left
+                } else {
+                    sb.setCharAt(index, Character.forDigit(digit, 10)); // Set incremented digit
+                    return sb.toString(); // Return updated USER_ID
+                }
+            }
+
+            // If we reach here, it means we need to increment the leading part
+            return "USER" + "1" + "000000".substring(1);
+        } else {
+            // If no users exist, start from USER000001
+            return "USER000001";
+        }
+    }
+
+    public void register(String firstName, String lastName, String email, String ic, String userId2, String password) throws SQLException {
+        System.out.println("Register method is called");
+
+        String userId = generateUserId();
+        if (userId == null || userId.isEmpty()) {
+            throw new SQLException("Generated USER_ID is null or empty.");
+        }
+        System.out.println("Generated USER_ID: " + userId);
+
+
+        String sql = "INSERT INTO USERS (USER_ID, ID, IC_PASSPORT, PASS, FIRST_NAME, LAST_NAME, EMAIL, ACCOUNT_TYPE) VALUES (?, ?, ?, ?, ?, ?, ?, 'CUSTOMER')";
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+
+        pstmt.setString(1, userId);   // Set the generated USER_ID
+        pstmt.setString(2, userId2);  // Set the custom user ID entered by the user (for login)
+        pstmt.setString(3, ic);
+        pstmt.setString(4, password);
+        pstmt.setString(5, firstName);
+        pstmt.setString(6, lastName);
+        pstmt.setString(7, email);
+
+        int rowsInserted = pstmt.executeUpdate();
+        conn.commit();
+    }
+    
+    public void createAccount(String firstName, String lastName, String email, String ic, String userId2, String password) throws SQLException {
+        String sql = "INSERT INTO USERS (ID, IC_PASSPORT, PASS, FIRST_NAME, LAST_NAME, EMAIL, ACCOUNT_TYPE) VALUES (?, ?, ?, ?, ?, ?, 'ADMIN')";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+
+        pstmt.setString(1, userId2);
+        pstmt.setString(2, ic);
+        pstmt.setString(3, password);
+        pstmt.setString(4, firstName);
+        pstmt.setString(5, lastName);
+        pstmt.setString(6, email);
+
+        int rowsInserted = pstmt.executeUpdate();
+        conn.commit();
+    }
 
     //ORDER FUNCTION
     public void createNewOrders(String orderID, String foodID, String userID, String quantity, String price, String date, String remarks) throws SQLException {
