@@ -88,16 +88,9 @@ public class DBConnection {
     }
     
     public void register(String firstName, String lastName, String email, String ic, String userId2, String password) throws SQLException {
-        System.out.println("Register method is called");
-
         String userId = generateUserId();
-        if (userId == null || userId.isEmpty()) {
-            throw new SQLException("Generated USER_ID is null or empty.");
-        }
-        System.out.println("Generated USER_ID: " + userId);
 
-
-        String sql = "INSERT INTO USERS (USER_ID, ID, IC_PASSPORT, PASS, FIRST_NAME, LAST_NAME, EMAIL, ACCOUNT_TYPE) VALUES (?, ?, ?, ?, ?, ?, ?, 'CUSTOMER')";
+        String sql = "INSERT INTO USERS (USER_ID, ID, IC_PASSPORT, PASS, FIRST_NAME, LAST_NAME, EMAIL, ACCOUNT_TYPE) VALUES (?, ?, ?, ?, ?, ?, ?, 'Troller')";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
@@ -113,17 +106,21 @@ public class DBConnection {
         conn.commit();
     }
     
-    public void createAccount(String firstName, String lastName, String email, String ic, String userId2, String password) throws SQLException {
-        String sql = "INSERT INTO USERS (ID, IC_PASSPORT, PASS, FIRST_NAME, LAST_NAME, EMAIL, ACCOUNT_TYPE) VALUES (?, ?, ?, ?, ?, ?, 'ADMIN')";
+    public void createAcc(String firstName, String lastName, String email, String ic, String userId3, String password) throws SQLException {
+        String userId = generateUserId();
+        
+        String sql = "INSERT INTO USERS (USER_ID, ID, IC_PASSPORT, PASS, FIRST_NAME, LAST_NAME, EMAIL, ACCOUNT_TYPE) VALUES (?, ?, ?, ?, ?, ?, ?, 'ADMIN')";
+        
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
-        pstmt.setString(1, userId2);
-        pstmt.setString(2, ic);
-        pstmt.setString(3, password);
-        pstmt.setString(4, firstName);
-        pstmt.setString(5, lastName);
-        pstmt.setString(6, email);
-
+        pstmt.setString(1, userId);   // Set the generated USER_ID
+        pstmt.setString(2, userId3);  // Set the custom user ID entered by the user (for login)
+        pstmt.setString(3, ic);
+        pstmt.setString(4, password);
+        pstmt.setString(5, firstName);
+        pstmt.setString(6, lastName);
+        pstmt.setString(7, email);
+        
         int rowsInserted = pstmt.executeUpdate();
         conn.commit();
     }

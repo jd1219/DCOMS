@@ -50,4 +50,13 @@ public class UserServiceImplementation extends UnicastRemoteObject implements Us
             throw new RemoteException("Error registering user.", ex);
         }
     }
+    
+    public void createAcc(String firstName, String lastName, String email, String ic, String userId3, String password) throws RemoteException {
+        try {
+            connection.createAcc(firstName, lastName, email, ic, userId3, password);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserServiceImplementation.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RemoteException("Error registering user.", ex);
+        }
+    }
 }

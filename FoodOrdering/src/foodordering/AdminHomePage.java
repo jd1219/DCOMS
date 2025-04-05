@@ -5,6 +5,12 @@
  */
 package foodordering;
 
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author ianwd
@@ -109,6 +115,11 @@ public class AdminHomePage extends javax.swing.JFrame {
         registerAdminButton.setMaximumSize(new java.awt.Dimension(500, 100));
         registerAdminButton.setMinimumSize(new java.awt.Dimension(500, 100));
         registerAdminButton.setPreferredSize(new java.awt.Dimension(500, 100));
+        registerAdminButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerAdminButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -206,6 +217,21 @@ public class AdminHomePage extends javax.swing.JFrame {
         rp.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_printReportButtonActionPerformed
+
+    private void registerAdminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerAdminButtonActionPerformed
+        CreateAcc createacc = null;
+        try {
+            createacc = new CreateAcc();
+        } catch (NotBoundException ex) {
+            Logger.getLogger(AdminHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(AdminHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
+            Logger.getLogger(AdminHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        createacc.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_registerAdminButtonActionPerformed
 
     /**
      * @param args the command line arguments
