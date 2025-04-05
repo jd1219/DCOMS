@@ -56,7 +56,7 @@ public class DBConnection {
     }
     
     public String generateUserId() throws SQLException {
-        String sql = "SELECT USER_ID FROM USERS ORDER BY CAST(SUBSTRING(USER_ID, 5) AS INT) DESC FETCH FIRST 1 ROWS ONLY";
+        String sql = "SELECT USER_ID FROM USERS ORDER BY CAST(SUBSTR(USER_ID, 5) AS INT) DESC FETCH FIRST 1 ROWS ONLY";
         PreparedStatement psmt = conn.prepareStatement(sql);
         ResultSet result = psmt.executeQuery();
 
@@ -74,6 +74,7 @@ public class DBConnection {
                     index--; // Move left
                 } else {
                     sb.setCharAt(index, Character.forDigit(digit, 10)); // Set incremented digit
+                    System.out.println(sb.toString());
                     return sb.toString(); // Return updated USER_ID
                 }
             }
@@ -85,7 +86,7 @@ public class DBConnection {
             return "USER000001";
         }
     }
-
+    
     public void register(String firstName, String lastName, String email, String ic, String userId2, String password) throws SQLException {
         System.out.println("Register method is called");
 

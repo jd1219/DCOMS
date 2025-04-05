@@ -291,7 +291,7 @@ public class Register extends javax.swing.JFrame {
         String userId2 = jTextField6.getText();
         char[] passwordInput = jPasswordField1.getPassword();
         String password = new String(passwordInput);
-
+        
         try {
             // Call the RMI method from the server layer
             authService.register(firstName, lastName, email, ic, userId2, password);
