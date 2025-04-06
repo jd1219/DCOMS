@@ -38,17 +38,17 @@ public class DBConnection {
     //SINGLETON CLASS END
 
     //USER FUNCTION
-    public String[] authenticate(String userId, String password) throws RemoteException, SQLException {
+    public String[] authenticate(String Id, String password) throws RemoteException, SQLException {
         String[] userData = null;
 
-        String query = "SELECT id, account_type FROM USERS WHERE id = ? AND pass = ?";
+        String query = "SELECT user_id, account_type FROM USERS WHERE id = ? AND pass = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setString(1, userId);
+            pstmt.setString(1, Id);
             pstmt.setString(2, password);
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    userData = new String[]{rs.getString("id"), rs.getString("account_type")};
+                    userData = new String[]{rs.getString("user_id"), rs.getString("account_type")};
                 }
             }
         }
@@ -87,15 +87,15 @@ public class DBConnection {
         }
     }
     
-    public void register(String firstName, String lastName, String email, String ic, String userId2, String password) throws SQLException {
+    public void register(String firstName, String lastName, String email, String ic, String Id, String password) throws SQLException {
         String userId = generateUserId();
 
-        String sql = "INSERT INTO USERS (USER_ID, ID, IC_PASSPORT, PASS, FIRST_NAME, LAST_NAME, EMAIL, ACCOUNT_TYPE) VALUES (?, ?, ?, ?, ?, ?, ?, 'Troller')";
+        String sql = "INSERT INTO USERS (USER_ID, ID, IC_PASSPORT, PASS, FIRST_NAME, LAST_NAME, EMAIL, ACCOUNT_TYPE) VALUES (?, ?, ?, ?, ?, ?, ?, 'CUSTOMER')";
 
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
         pstmt.setString(1, userId);   // Set the generated USER_ID
-        pstmt.setString(2, userId2);  // Set the custom user ID entered by the user (for login)
+        pstmt.setString(2, Id);  // Set the custom user ID entered by the user (for login)
         pstmt.setString(3, ic);
         pstmt.setString(4, password);
         pstmt.setString(5, firstName);
@@ -106,7 +106,7 @@ public class DBConnection {
         conn.commit();
     }
     
-    public void createAcc(String firstName, String lastName, String email, String ic, String userId3, String password) throws SQLException {
+    public void createAcc(String firstName, String lastName, String email, String ic, String Id, String password) throws SQLException {
         String userId = generateUserId();
         
         String sql = "INSERT INTO USERS (USER_ID, ID, IC_PASSPORT, PASS, FIRST_NAME, LAST_NAME, EMAIL, ACCOUNT_TYPE) VALUES (?, ?, ?, ?, ?, ?, ?, 'ADMIN')";
@@ -114,7 +114,7 @@ public class DBConnection {
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
         pstmt.setString(1, userId);   // Set the generated USER_ID
-        pstmt.setString(2, userId3);  // Set the custom user ID entered by the user (for login)
+        pstmt.setString(2, Id);  // Set the custom user ID entered by the user (for login)
         pstmt.setString(3, ic);
         pstmt.setString(4, password);
         pstmt.setString(5, firstName);
@@ -128,7 +128,7 @@ public class DBConnection {
     public String[] retrieveCredentials(String userId) throws RemoteException, SQLException {
         String[] userCredentials = null;
 
-        String query = "SELECT id, ic_passport, pass, first_name, last_name, email FROM USERS WHERE id = ?";
+        String query = "SELECT id, ic_passport, pass, first_name, last_name, email FROM USERS WHERE user_id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, userId);
 
@@ -140,6 +140,23 @@ public class DBConnection {
             }
         }
         return userCredentials;
+    }
+    
+    public void editProfile(String userId, String firstName, String lastName, String email, String ic, String Id, String password) throws SQLException {
+        String sql = "UPDATE USERS SET ID = ?, IC_PASSPORT = ?, PASS = ?, FIRST_NAME = ?, LAST_NAME = ?, EMAIL = ? WHERE USER_ID = ?";
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+
+        pstmt.setString(1, Id);
+        pstmt.setString(2, ic);
+        pstmt.setString(3, password);
+        pstmt.setString(4, firstName);
+        pstmt.setString(5, lastName);
+        pstmt.setString(6, email);
+        pstmt.setString(7, userId);
+
+        int rowsInserted = pstmt.executeUpdate();
+        conn.commit();
     }
 
     //ORDER FUNCTION

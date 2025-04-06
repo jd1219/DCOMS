@@ -175,13 +175,13 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String userId = jTextField2.getText();
+        String Id = jTextField2.getText();
         char[] passwordInput = jPasswordField1.getPassword();
         String password = new String(passwordInput);
         String[] userData = null;
         
         try {
-            userData = authService.authenticate(userId, password);
+            userData = authService.authenticate(Id, password);
         } catch (RemoteException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -189,6 +189,8 @@ public class Login extends javax.swing.JFrame {
         if (userData != null) {
             String loggedInUserId = userData[0]; // Get user ID
             String accountType = userData[1];    // Get account type
+            
+            System.out.println(userData[0]);
 
             JOptionPane.showMessageDialog(this, "Login successful!\nAccount Type: " + accountType, "Success", JOptionPane.INFORMATION_MESSAGE);
 

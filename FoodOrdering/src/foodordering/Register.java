@@ -288,13 +288,13 @@ public class Register extends javax.swing.JFrame {
         String lastName = jTextField3.getText();
         String email = jTextField4.getText();
         String ic = jTextField5.getText();
-        String userId2 = jTextField6.getText();
+        String Id = jTextField6.getText();
         char[] passwordInput = jPasswordField1.getPassword();
         String password = new String(passwordInput);
         
         try {
             // Call the RMI method from the server layer
-            authService.register(firstName, lastName, email, ic, userId2, password);
+            authService.register(firstName, lastName, email, ic, Id, password);
 
             // Show a success message
             JOptionPane.showMessageDialog(this, "Registration successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
