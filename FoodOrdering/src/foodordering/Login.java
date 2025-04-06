@@ -195,7 +195,15 @@ public class Login extends javax.swing.JFrame {
             if (accountType.equals("ADMIN")) {
                 new AdminHomePage(loggedInUserId).setVisible(true);
             } else {
-                new CustHomePage(loggedInUserId).setVisible(true);
+                try {
+                    new CustHomePage(loggedInUserId).setVisible(true);
+                } catch (NotBoundException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             this.dispose();
         } else {

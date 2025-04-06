@@ -124,6 +124,23 @@ public class DBConnection {
         int rowsInserted = pstmt.executeUpdate();
         conn.commit();
     }
+    
+    public String[] retrieveCredentials(String userId) throws RemoteException, SQLException {
+        String[] userCredentials = null;
+
+        String query = "SELECT id, ic_passport, pass, first_name, last_name, email FROM USERS WHERE id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, userId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    userCredentials = new String[]{rs.getString("id"), rs.getString("IC_PASSPORT"), rs.getString("pass"), 
+                        rs.getString("first_name"), rs.getString("last_name"), rs.getString("email")};
+                }
+            }
+        }
+        return userCredentials;
+    }
 
     //ORDER FUNCTION
     public void createNewOrders(String orderID, String foodID, String userID, String quantity, String price, String date, String remarks) throws SQLException {

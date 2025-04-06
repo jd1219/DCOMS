@@ -59,4 +59,15 @@ public class UserServiceImplementation extends UnicastRemoteObject implements Us
             throw new RemoteException("Error registering user.", ex);
         }
     }
+    
+    public String[] retrieveCredentials(String userId) throws RemoteException {
+        String[] userCredentials = null;
+        try {
+            userCredentials = connection.retrieveCredentials(userId);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(UserServiceImplementation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return userCredentials;
+    }
 }

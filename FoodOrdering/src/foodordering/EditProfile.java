@@ -5,17 +5,54 @@
  */
 package foodordering;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author ianwd
  */
 public class EditProfile extends javax.swing.JFrame {
+    
+    UserServiceInterface authService;
+    
+    private String userId;
 
     /**
      * Creates new form EditProfile
      */
-    public EditProfile() {
+    public EditProfile(String userId) throws NotBoundException, MalformedURLException, RemoteException {
+        this.userId = userId;
+        
         initComponents();
+        
+        authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
+        
+        setLocationRelativeTo(null);
+        
+        String[] userCredentials = null;
+        userCredentials = authService.retrieveCredentials(userId);
+        
+        System.out.println(userCredentials);
+        
+        try {
+            if (userCredentials != null) {
+                jTextField6.setText(userCredentials[0]);
+                jTextField5.setText(userCredentials[1]);
+                jTextField7.setText(userCredentials[2]);
+                jTextField2.setText(userCredentials[3]);
+                jTextField3.setText(userCredentials[4]);
+                jTextField4.setText(userCredentials[5]);
+            } else {
+                System.out.println("No data found for user.");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -254,7 +291,7 @@ public class EditProfile extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField7ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -287,7 +324,15 @@ public class EditProfile extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EditProfile().setVisible(true);
+                try {
+                    new EditProfile("testData").setVisible(true);
+                } catch (NotBoundException ex) {
+                    Logger.getLogger(EditProfile.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(EditProfile.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(EditProfile.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

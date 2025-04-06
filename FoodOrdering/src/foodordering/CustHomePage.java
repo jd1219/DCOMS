@@ -6,6 +6,12 @@
 package foodordering;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 /**
@@ -13,20 +19,27 @@ import javax.swing.ImageIcon;
  * @author ianwd
  */
 public class CustHomePage extends javax.swing.JFrame {
+    
+    UserServiceInterface authService;
+    
     private String userId;
 
     /**
      * Creates new form CustHomePage
      */
-    public CustHomePage(String userId) {
+    public CustHomePage(String userId) throws NotBoundException, MalformedURLException, RemoteException {
         this.userId = userId;
+        
         initComponents();
+        
         File file = new File("images/EditProfile.png");
         File file2 = new File("images/OrderFood.png");
         ImageIcon icon = new ImageIcon(file.getAbsolutePath());
         ImageIcon icon2 = new ImageIcon(file2.getAbsolutePath());
         jButton2.setIcon(icon);
         jButton1.setIcon(icon2);
+        
+        authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
         
         setLocationRelativeTo(null);
     }
@@ -97,6 +110,12 @@ public class CustHomePage extends javax.swing.JFrame {
             .addGap(0, 285, Short.MAX_VALUE)
         );
 
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 102, 102));
         jLabel4.setText("EDIT PROFILE");
@@ -158,6 +177,21 @@ public class CustHomePage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        EditProfile editprofile = null;
+        try {
+            editprofile = new EditProfile(userId);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
+            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        editprofile.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -188,7 +222,15 @@ public class CustHomePage extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CustHomePage("testUser").setVisible(true);
+                try {
+                    new CustHomePage("testUser").setVisible(true);
+                } catch (NotBoundException ex) {
+                    Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
