@@ -18,13 +18,15 @@ import javax.swing.JOptionPane;
  * @author ianwd
  */
 public class CreateAcc extends javax.swing.JFrame {
+    private String userId;
     
     UserServiceInterface authService;
 
     /**
      * Creates new form Register
      */
-    public CreateAcc() throws NotBoundException, MalformedURLException, RemoteException  {
+    public CreateAcc(String userId) throws NotBoundException, MalformedURLException, RemoteException  {
+        this.userId = userId;
         initComponents();
 
         authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
@@ -315,14 +317,7 @@ public class CreateAcc extends javax.swing.JFrame {
             // Show a success message
             JOptionPane.showMessageDialog(this, "Create Account successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-            try {
-                // Optionally redirect to login page
-                new Login().setVisible(true);
-            } catch (NotBoundException ex) {
-                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (MalformedURLException ex) {
-                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            new AdminHomePage(userId).setVisible(true);
             this.dispose();  // Close registration form
 
         } catch (RemoteException ex) {
@@ -366,15 +361,7 @@ public class CreateAcc extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    new CreateAcc().setVisible(true);
-                } catch (NotBoundException ex) {
-                    Logger.getLogger(CreateAcc.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(CreateAcc.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(CreateAcc.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                
             }
         });
     }

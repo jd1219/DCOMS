@@ -40,6 +40,12 @@ public class Login extends javax.swing.JFrame {
         File file = new File("images/5216909.png");
         ImageIcon icon = new ImageIcon(file.getAbsolutePath());
         jLabel5.setIcon(icon);
+        
+        File show = new File("images/show.png");
+        ImageIcon showIcon = new ImageIcon(show.getAbsolutePath());
+        
+        File hide = new File("images/hide.png");
+        ImageIcon hideIcon = new ImageIcon(hide.getAbsolutePath());
 
         authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
 
@@ -86,6 +92,7 @@ public class Login extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jToggleButton1 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("LOGIN");
@@ -144,13 +151,14 @@ public class Login extends javax.swing.JFrame {
         jPanel1.add(jTextField2);
         jTextField2.setBounds(420, 210, 390, 50);
 
+        jPasswordField1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordField1ActionPerformed(evt);
             }
         });
         jPanel1.add(jPasswordField1);
-        jPasswordField1.setBounds(420, 330, 390, 50);
+        jPasswordField1.setBounds(420, 330, 330, 50);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton1.setForeground(new java.awt.Color(0, 102, 102));
@@ -176,6 +184,16 @@ public class Login extends javax.swing.JFrame {
         });
         jPanel1.add(jButton2);
         jButton2.setBounds(630, 497, 79, 17);
+
+        jToggleButton1.setIcon(new javax.swing.ImageIcon("D:\\Degree Year 3\\Dcoms_Assignment\\DCOMS\\FoodOrdering\\images\\hide.png")); // NOI18N
+        jToggleButton1.setActionCommand("Show/Hide");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jToggleButton1);
+        jToggleButton1.setBounds(760, 330, 50, 50);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -221,7 +239,7 @@ public class Login extends javax.swing.JFrame {
             
             System.out.println(userData[0]);
 
-            JOptionPane.showMessageDialog(this, "Login Successful!" + accountType, "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
             if (accountType.equals("ADMIN")) {
                 new AdminHomePage(loggedInUserId).setVisible(true);
@@ -260,6 +278,22 @@ public class Login extends javax.swing.JFrame {
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPasswordField1ActionPerformed
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        File show = new File("images/show.png");
+        ImageIcon showIcon = new ImageIcon(show.getAbsolutePath());
+
+        File hide = new File("images/hide.png");
+        ImageIcon hideIcon = new ImageIcon(hide.getAbsolutePath());
+
+        if (jToggleButton1.isSelected()) {
+            jPasswordField1.setEchoChar((char) 0); // Show password
+            jToggleButton1.setIcon(showIcon); // Switch to hide icon
+        } else {
+            jPasswordField1.setEchoChar('*'); // Hide password
+            jToggleButton1.setIcon(hideIcon); // Switch to show icon
+        }
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -316,5 +350,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 }

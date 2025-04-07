@@ -83,6 +83,11 @@ public class AdminHomePage extends javax.swing.JFrame {
         editProfileButton.setBorderPainted(false);
         editProfileButton.setMaximumSize(new java.awt.Dimension(230, 210));
         editProfileButton.setPreferredSize(new java.awt.Dimension(500, 100));
+        editProfileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editProfileButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -186,6 +191,11 @@ public class AdminHomePage extends javax.swing.JFrame {
         viewAllFoodButton.setText("VIEW ALL FOOD");
         viewAllFoodButton.setMinimumSize(new java.awt.Dimension(500, 100));
         viewAllFoodButton.setPreferredSize(new java.awt.Dimension(500, 100));
+        viewAllFoodButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewAllFoodButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
@@ -221,7 +231,7 @@ public class AdminHomePage extends javax.swing.JFrame {
     private void registerAdminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerAdminButtonActionPerformed
         CreateAcc createacc = null;
         try {
-            createacc = new CreateAcc();
+            createacc = new CreateAcc(userId);
         } catch (NotBoundException ex) {
             Logger.getLogger(AdminHomePage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
@@ -232,6 +242,36 @@ public class AdminHomePage extends javax.swing.JFrame {
         createacc.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_registerAdminButtonActionPerformed
+
+    private void editProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editProfileButtonActionPerformed
+        EditProfile editprofile = null;
+        try {
+            editprofile = new EditProfile(userId);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
+            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        editprofile.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_editProfileButtonActionPerformed
+
+    private void viewAllFoodButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAllFoodButtonActionPerformed
+//        ViewAllFood viewallfood = null;
+//        try {
+//            viewallfood = new EditProfile(userId);
+//        } catch (NotBoundException ex) {
+//            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (MalformedURLException ex) {
+//            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (RemoteException ex) {
+//            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        viewallfood.setVisible(true);
+//        this.dispose();
+    }//GEN-LAST:event_viewAllFoodButtonActionPerformed
 
     /**
      * @param args the command line arguments
