@@ -106,10 +106,16 @@ public class DBConnection {
         conn.commit();
     }
     
-    public void createAcc(String firstName, String lastName, String email, String ic, String Id, String password) throws SQLException {
+    public void createAcc(String firstName, String lastName, String email, String ic, String Id, String password, String accountType) throws SQLException {
         String userId = generateUserId();
         
-        String sql = "INSERT INTO USERS (USER_ID, ID, IC_PASSPORT, PASS, FIRST_NAME, LAST_NAME, EMAIL, ACCOUNT_TYPE) VALUES (?, ?, ?, ?, ?, ?, ?, 'ADMIN')";
+        if (accountType.equalsIgnoreCase("Customer")) {
+            accountType = "CUSTOMER";
+        } else if (accountType.equalsIgnoreCase("Admin")) {
+            accountType = "ADMIN";
+        }
+        
+        String sql = "INSERT INTO USERS (USER_ID, ID, IC_PASSPORT, PASS, FIRST_NAME, LAST_NAME, EMAIL, ACCOUNT_TYPE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
@@ -120,6 +126,7 @@ public class DBConnection {
         pstmt.setString(5, firstName);
         pstmt.setString(6, lastName);
         pstmt.setString(7, email);
+        pstmt.setString(8, accountType);
         
         int rowsInserted = pstmt.executeUpdate();
         conn.commit();

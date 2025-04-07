@@ -51,9 +51,9 @@ public class UserServiceImplementation extends UnicastRemoteObject implements Us
         }
     }
     
-    public void createAcc(String firstName, String lastName, String email, String ic, String Id, String password) throws RemoteException {
+    public void createAcc(String firstName, String lastName, String email, String ic, String Id, String password, String accountType) throws RemoteException {
         try {
-            connection.createAcc(firstName, lastName, email, ic, Id, password);
+            connection.createAcc(firstName, lastName, email, ic, Id, password, accountType);
         } catch (SQLException ex) {
             Logger.getLogger(UserServiceImplementation.class.getName()).log(Level.SEVERE, null, ex);
             throw new RemoteException("Error creating account.", ex);
