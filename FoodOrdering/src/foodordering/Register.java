@@ -5,6 +5,7 @@
  */
 package foodordering;
 
+import java.awt.event.KeyEvent;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -31,6 +33,50 @@ public class Register extends javax.swing.JFrame {
         authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
 
         this.setLocationRelativeTo(null);
+        
+        // Make Enter key trigger the login button
+        getRootPane().setDefaultButton(jButton1);
+
+        // Make sure the root pane has focus
+        SwingUtilities.invokeLater(() -> {
+            getRootPane().requestFocusInWindow();
+        });
+        
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                enterKeyPressed(evt);
+            }
+        });
+        
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                enterKeyPressed(evt);
+            }
+        });
+        
+        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                enterKeyPressed(evt);
+            }
+        });
+        
+        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                enterKeyPressed(evt);
+            }
+        });
+        
+        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                enterKeyPressed(evt);
+            }
+        });
+
+        jPasswordField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                enterKeyPressed(evt);
+            }
+        });
     }
 
     /**
@@ -263,6 +309,12 @@ public class Register extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void enterKeyPressed(java.awt.event.KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            jButton1.doClick(); // Triggers the login button
+        }
+    }
+    
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
@@ -284,32 +336,61 @@ public class Register extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String firstName = jTextField2.getText();
-        String lastName = jTextField3.getText();
-        String email = jTextField4.getText();
-        String ic = jTextField5.getText();
-        String Id = jTextField6.getText();
+        String firstName = jTextField2.getText().trim();
+        String lastName = jTextField3.getText().trim();
+        String email = jTextField4.getText().trim();
+        String ic = jTextField5.getText().trim();
+        String Id = jTextField6.getText().trim();
         char[] passwordInput = jPasswordField1.getPassword();
         String password = new String(passwordInput);
-        
+
+        // Basic validations
+        if (firstName.isEmpty() || !firstName.matches("[a-zA-Z]+")) {
+            JOptionPane.showMessageDialog(this, "First name should only contain letters.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (lastName.isEmpty() || !lastName.matches("[a-zA-Z]+")) {
+            JOptionPane.showMessageDialog(this, "Last name should only contain letters.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!email.contains("@") || !email.endsWith(".com")) {
+            JOptionPane.showMessageDialog(this, "Email must contain '@' and end with '.com'.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (!ic.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "IC/Passport number should only contain numbers.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (Id.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "ID cannot be empty.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Password cannot be empty.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         try {
-            // Call the RMI method from the server layer
+            // Check if ID already exists in database
+            boolean idExists = authService.isIdTaken(Id);
+            if (idExists) {
+                JOptionPane.showMessageDialog(this, "ID is already taken. Please choose another.", "Duplicate ID", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Proceed with registration
             authService.register(firstName, lastName, email, ic, Id, password);
 
-            // Show a success message
-            JOptionPane.showMessageDialog(this, "Registration successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Registration Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            new Login().setVisible(true);
+            this.dispose();
 
-            try {
-                // Optionally redirect to login page
-                new Login().setVisible(true);
-            } catch (NotBoundException ex) {
-                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (MalformedURLException ex) {
-                Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            this.dispose();  // Close registration form
-
-        } catch (RemoteException ex) {
+        } catch (RemoteException | NotBoundException | MalformedURLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Remote connection error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }

@@ -18,4 +18,5 @@ public interface UserServiceInterface extends Remote{
     void createAcc(String firstName, String lastName, String email, String ic, String Id, String password, String accountType) throws RemoteException;
     public String[] retrieveCredentials(String userId) throws RemoteException;
     void editProfile(String userId, String firstName, String lastName, String email, String ic, String Id, String password) throws RemoteException;
+    public boolean isIdTaken(String Id) throws RemoteException;
 }

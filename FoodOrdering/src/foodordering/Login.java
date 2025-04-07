@@ -5,6 +5,7 @@
  */
 package foodordering;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -20,6 +21,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -34,13 +36,34 @@ public class Login extends javax.swing.JFrame {
     
     public Login() throws NotBoundException, MalformedURLException, RemoteException {
         initComponents();
+
         File file = new File("images/5216909.png");
         ImageIcon icon = new ImageIcon(file.getAbsolutePath());
         jLabel5.setIcon(icon);
-        
+
         authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
-        
+
         this.setLocationRelativeTo(null);
+
+        // Make Enter key trigger the login button
+        getRootPane().setDefaultButton(jButton1);
+
+        // Make sure the root pane has focus
+        SwingUtilities.invokeLater(() -> {
+            getRootPane().requestFocusInWindow();
+        });
+        
+        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                enterKeyPressed(evt);
+            }
+        });
+
+        jPasswordField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                enterKeyPressed(evt);
+            }
+        });
     }
 
     /**
@@ -173,7 +196,13 @@ public class Login extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
-
+    
+    private void enterKeyPressed(java.awt.event.KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            jButton1.doClick(); // Triggers the login button
+        }
+    }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String Id = jTextField2.getText();
         char[] passwordInput = jPasswordField1.getPassword();
@@ -192,7 +221,7 @@ public class Login extends javax.swing.JFrame {
             
             System.out.println(userData[0]);
 
-            JOptionPane.showMessageDialog(this, "Login successful!\nAccount Type: " + accountType, "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Login Successful!" + accountType, "Success", JOptionPane.INFORMATION_MESSAGE);
 
             if (accountType.equals("ADMIN")) {
                 new AdminHomePage(loggedInUserId).setVisible(true);

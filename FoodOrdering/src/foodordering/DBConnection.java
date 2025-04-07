@@ -149,6 +149,18 @@ public class DBConnection {
         return userCredentials;
     }
     
+    public boolean isIdTaken(String Id) throws RemoteException, SQLException {
+        String query = "SELECT COUNT(*) FROM USERS WHERE ID = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, Id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;  // If count > 0, the ID exists
+            }
+        }
+        return false;  // If no rows match, ID does not exist
+    }
+    
     public void editProfile(String userId, String firstName, String lastName, String email, String ic, String Id, String password) throws SQLException {
         String sql = "UPDATE USERS SET ID = ?, IC_PASSPORT = ?, PASS = ?, FIRST_NAME = ?, LAST_NAME = ?, EMAIL = ? WHERE USER_ID = ?";
 

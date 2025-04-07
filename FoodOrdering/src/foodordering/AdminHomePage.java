@@ -111,7 +111,7 @@ public class AdminHomePage extends javax.swing.JFrame {
         bottomPanel.add(jPanel2, gridBagConstraints);
 
         registerAdminButton.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        registerAdminButton.setText("REGISTER ADMIN");
+        registerAdminButton.setText("CREATE ACCOUNT");
         registerAdminButton.setMaximumSize(new java.awt.Dimension(500, 100));
         registerAdminButton.setMinimumSize(new java.awt.Dimension(500, 100));
         registerAdminButton.setPreferredSize(new java.awt.Dimension(500, 100));
