@@ -409,7 +409,7 @@ public class Register extends javax.swing.JFrame {
             // Proceed with registration
             CreateUserThread userProcess = new CreateUserThread(authService, firstName, lastName, email, ic , Id, password);
             Thread userThread = new Thread(userProcess);
-            userThread.run();
+            userThread.start();
             
             JOptionPane.showMessageDialog(this, "Registration Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
             new Login().setVisible(true);

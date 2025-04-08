@@ -7,6 +7,10 @@ package foodordering;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -33,17 +37,17 @@ public class Login extends javax.swing.JFrame {
      * Creates new form LoginF
      */
     UserServiceInterface authService;
-    
+
     public Login() throws NotBoundException, MalformedURLException, RemoteException {
         initComponents();
 
         File file = new File("images/5216909.png");
         ImageIcon icon = new ImageIcon(file.getAbsolutePath());
         jLabel5.setIcon(icon);
-        
+
         File show = new File("images/show.png");
         ImageIcon showIcon = new ImageIcon(show.getAbsolutePath());
-        
+
         File hide = new File("images/hide.png");
         ImageIcon hideIcon = new ImageIcon(hide.getAbsolutePath());
 
@@ -58,7 +62,7 @@ public class Login extends javax.swing.JFrame {
         SwingUtilities.invokeLater(() -> {
             getRootPane().requestFocusInWindow();
         });
-        
+
         jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
@@ -70,6 +74,21 @@ public class Login extends javax.swing.JFrame {
                 enterKeyPressed(evt);
             }
         });
+
+        File checkFile = new File("user.ser");
+        if (checkFile.exists()) {
+            try (FileInputStream fileIn = new FileInputStream("user.ser");
+                    ObjectInputStream in = new ObjectInputStream(fileIn)) {
+
+                AccountSerialization savedUser = (AccountSerialization) in.readObject();
+                jTextField2.setText(savedUser.getId());
+                jPasswordField1.setText(savedUser.getPassword());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     /**
@@ -97,6 +116,14 @@ public class Login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("LOGIN");
         setPreferredSize(new java.awt.Dimension(900, 600));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setToolTipText("");
         jPanel1.setPreferredSize(new java.awt.Dimension(700, 500));
@@ -214,29 +241,29 @@ public class Login extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
-    
+
     private void enterKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             jButton1.doClick(); // Triggers the login button
         }
     }
-    
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String Id = jTextField2.getText();
         char[] passwordInput = jPasswordField1.getPassword();
         String password = new String(passwordInput);
         String[] userData = null;
-        
+
         try {
             userData = authService.authenticate(Id, password);
         } catch (RemoteException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         if (userData != null) {
             String loggedInUserId = userData[0]; // Get user ID
             String accountType = userData[1];    // Get account type
-            
+
             System.out.println(userData[0]);
 
             JOptionPane.showMessageDialog(this, "Login Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -253,6 +280,16 @@ public class Login extends javax.swing.JFrame {
                 } catch (RemoteException ex) {
                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+
+            AccountSerialization serial = new AccountSerialization(Id, password);
+            try (FileOutputStream fileOut = new FileOutputStream("user.ser");
+                    ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+
+                out.writeObject(serial);
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             this.dispose();
         } else {
@@ -294,6 +331,14 @@ public class Login extends javax.swing.JFrame {
             jToggleButton1.setIcon(hideIcon); // Switch to show icon
         }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        System.out.println("frame closed");
+    }//GEN-LAST:event_formWindowClosed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
