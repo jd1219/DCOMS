@@ -23,7 +23,7 @@ import javax.swing.SwingUtilities;
  * @author ianwd
  */
 public class Register extends javax.swing.JFrame {
-    
+
     UserServiceInterface authService;
 
     /**
@@ -31,17 +31,17 @@ public class Register extends javax.swing.JFrame {
      */
     public Register() throws NotBoundException, MalformedURLException, RemoteException {
         initComponents();
-        
+
         File show = new File("images/show.png");
         ImageIcon showIcon = new ImageIcon(show.getAbsolutePath());
-        
+
         File hide = new File("images/hide.png");
         ImageIcon hideIcon = new ImageIcon(hide.getAbsolutePath());
-        
+
         authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
 
         this.setLocationRelativeTo(null);
-        
+
         // Make Enter key trigger the login button
         getRootPane().setDefaultButton(jButton1);
 
@@ -49,31 +49,31 @@ public class Register extends javax.swing.JFrame {
         SwingUtilities.invokeLater(() -> {
             getRootPane().requestFocusInWindow();
         });
-        
+
         jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
             }
         });
-        
+
         jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
             }
         });
-        
+
         jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
             }
         });
-        
+
         jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
             }
         });
-        
+
         jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
@@ -337,7 +337,7 @@ public class Register extends javax.swing.JFrame {
             jButton1.doClick(); // Triggers the login button
         }
     }
-    
+
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
@@ -407,8 +407,10 @@ public class Register extends javax.swing.JFrame {
             }
 
             // Proceed with registration
-            authService.register(firstName, lastName, email, ic, Id, password);
-
+            CreateUserThread userProcess = new CreateUserThread(authService, firstName, lastName, email, ic , Id, password);
+            Thread userThread = new Thread(userProcess);
+            userThread.run();
+            
             JOptionPane.showMessageDialog(this, "Registration Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
             new Login().setVisible(true);
             this.dispose();

@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -101,7 +103,11 @@ public class DBConnection {
         pstmt.setString(5, firstName);
         pstmt.setString(6, lastName);
         pstmt.setString(7, email);
-
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
         int rowsInserted = pstmt.executeUpdate();
         conn.commit();
     }
