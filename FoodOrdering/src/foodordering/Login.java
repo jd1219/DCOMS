@@ -88,7 +88,6 @@ public class Login extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         }
-
     }
 
     /**

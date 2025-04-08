@@ -10,6 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -50,6 +51,10 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         this.mainPage = mainPage;
         this.mode = mode;
         this.connection = Obj;
+        
+        File file = new File("images/littleburger.png");
+        ImageIcon icon1 = new ImageIcon(file.getAbsolutePath());
+        jButton1.setIcon(icon1);
 
         //set remarks
         remarksTextArea.setText(remarks);
@@ -388,6 +393,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         MainContentPanel.add(OrderRemarksPanel, gridBagConstraints);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon("D:\\Degree Year 3\\Dcoms_Assignment\\DCOMS\\FoodOrdering\\images\\littleburger.png")); // NOI18N
         jButton1.setText("Order");
         jButton1.setMaximumSize(new java.awt.Dimension(154, 62));
         jButton1.setMinimumSize(new java.awt.Dimension(154, 62));

@@ -406,7 +406,7 @@ public class EditProfile extends javax.swing.JFrame {
 
         try {
             // Check if ID already exists in database
-            boolean idExists = authService.isIdTaken(Id);
+            boolean idExists = authService.isIdTakenEdit(Id, userId);
             if (idExists) {
                 JOptionPane.showMessageDialog(this, "ID is already taken. Please choose another.", "Duplicate ID", JOptionPane.ERROR_MESSAGE);
                 return;

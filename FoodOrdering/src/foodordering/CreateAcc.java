@@ -417,7 +417,9 @@ public class CreateAcc extends javax.swing.JFrame {
             }
 
             // Proceed with registration
-            authService.createAcc(firstName, lastName, email, ic, Id, password, accountType);
+            CreateAccountThread createAccountProcess = new CreateAccountThread(authService, firstName, lastName, email, ic , Id, password, accountType);
+            Thread createAccountThread = new Thread(createAccountProcess);
+            createAccountThread.start();
 
             // Show a success message
             JOptionPane.showMessageDialog(this, "Create Account successful!", "Success", JOptionPane.INFORMATION_MESSAGE);

@@ -89,4 +89,14 @@ public class UserServiceImplementation extends UnicastRemoteObject implements Us
             throw new RemoteException("Database error while checking ID.", e);  // Rethrow as RemoteException if there's an error
         }
     }
+    
+    public boolean isIdTakenEdit(String Id, String userId) throws RemoteException {
+        try {
+            // Assuming connection is a valid database connection object
+            return connection.isIdTakenEdit(Id, userId);  // Call the method of the connection object to check if the ID exists
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RemoteException("Database error while checking ID.", e);  // Rethrow as RemoteException if there's an error
+        }
+    }
 }

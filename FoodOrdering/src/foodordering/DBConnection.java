@@ -103,6 +103,7 @@ public class DBConnection {
         pstmt.setString(5, firstName);
         pstmt.setString(6, lastName);
         pstmt.setString(7, email);
+  
         int rowsInserted = pstmt.executeUpdate();
         conn.commit();
     }
@@ -160,6 +161,34 @@ public class DBConnection {
             }
         }
         return false;  // If no rows match, ID does not exist
+    }
+    
+    public boolean isIdTakenEdit(String Id, String userId) throws RemoteException, SQLException {
+        String getCurrentRecordIdQuery = "SELECT ID FROM USERS WHERE USER_ID = ?";
+        String currentRecordId = null;
+
+        try (PreparedStatement pstmt = conn.prepareStatement(getCurrentRecordIdQuery)) {
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                currentRecordId = rs.getString("ID");
+            } else {
+                return false; // User not found
+            }
+        }
+
+        // Check if any OTHER user has the same ID
+        String checkIdQuery = "SELECT COUNT(*) FROM USERS WHERE ID = ? AND ID != ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(checkIdQuery)) {
+            pstmt.setString(1, Id);
+            pstmt.setString(2, currentRecordId); // Ignore self
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // true if taken by someone else
+            }
+        }
+
+        return false;
     }
     
     public void editProfile(String userId, String firstName, String lastName, String email, String ic, String Id, String password) throws SQLException {
