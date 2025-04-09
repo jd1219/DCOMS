@@ -256,7 +256,6 @@ public class AdminHomePage extends javax.swing.JFrame {
             Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
         }
         editprofile.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_editProfileButtonActionPerformed
 
     private void viewAllFoodButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAllFoodButtonActionPerformed

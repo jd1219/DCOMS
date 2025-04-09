@@ -202,7 +202,6 @@ public class CustHomePage extends javax.swing.JFrame {
             Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
         }
         editprofile.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

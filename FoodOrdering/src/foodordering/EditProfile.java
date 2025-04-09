@@ -44,6 +44,8 @@ public class EditProfile extends javax.swing.JFrame {
         
         initComponents();
         
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
         jToggleButton1.setIcon(hideIcon);
         
         authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
@@ -423,10 +425,9 @@ public class EditProfile extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(this, "Edit Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-            new CustHomePage(userId).setVisible(true);
             this.dispose();
 
-        } catch (RemoteException | NotBoundException | MalformedURLException ex) {
+        } catch (RemoteException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Remote connection error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
