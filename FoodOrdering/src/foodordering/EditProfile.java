@@ -39,7 +39,11 @@ public class EditProfile extends javax.swing.JFrame {
         File hide = new File("images/hide.png");
         ImageIcon hideIcon = new ImageIcon(hide.getAbsolutePath());
         
+        
+        
         initComponents();
+        
+        jToggleButton1.setIcon(hideIcon);
         
         authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
         

@@ -23,7 +23,7 @@ import javax.swing.SwingUtilities;
  * @author ianwd
  */
 public class Register extends javax.swing.JFrame {
-
+    
     UserServiceInterface authService;
 
     /**
@@ -31,15 +31,18 @@ public class Register extends javax.swing.JFrame {
      */
     public Register() throws NotBoundException, MalformedURLException, RemoteException {
         initComponents();
-
+        
         File show = new File("images/show.png");
+        
         ImageIcon showIcon = new ImageIcon(show.getAbsolutePath());
-
+        
         File hide = new File("images/hide.png");
         ImageIcon hideIcon = new ImageIcon(hide.getAbsolutePath());
-
+        
+        jToggleButton1.setIcon(hideIcon);
+        
         authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
-
+        
         this.setLocationRelativeTo(null);
 
         // Make Enter key trigger the login button
@@ -49,37 +52,37 @@ public class Register extends javax.swing.JFrame {
         SwingUtilities.invokeLater(() -> {
             getRootPane().requestFocusInWindow();
         });
-
+        
         jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
             }
         });
-
+        
         jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
             }
         });
-
+        
         jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
             }
         });
-
+        
         jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
             }
         });
-
+        
         jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
             }
         });
-
+        
         jPasswordField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
@@ -372,32 +375,32 @@ public class Register extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "First name should only contain letters.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        
         if (lastName.isEmpty() || !lastName.matches("[a-zA-Z]+")) {
             JOptionPane.showMessageDialog(this, "Last name should only contain letters.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        
         if (!email.contains("@") || !email.endsWith(".com")) {
             JOptionPane.showMessageDialog(this, "Email must contain '@' and end with '.com'.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        
         if (!ic.matches("\\d+")) {
             JOptionPane.showMessageDialog(this, "IC/Passport number should only contain numbers.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        
         if (Id.isEmpty()) {
             JOptionPane.showMessageDialog(this, "ID cannot be empty.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        
         if (password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Password cannot be empty.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        
         try {
             // Check if ID already exists in database
             boolean idExists = authService.isIdTaken(Id);
@@ -407,14 +410,14 @@ public class Register extends javax.swing.JFrame {
             }
 
             // Proceed with registration
-            CreateUserThread userProcess = new CreateUserThread(authService, firstName, lastName, email, ic , Id, password);
+            CreateUserThread userProcess = new CreateUserThread(authService, firstName, lastName, email, ic, Id, password);
             Thread userThread = new Thread(userProcess);
             userThread.start();
             
             JOptionPane.showMessageDialog(this, "Registration Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
             new Login().setVisible(true);
             this.dispose();
-
+            
         } catch (RemoteException | NotBoundException | MalformedURLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Remote connection error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -428,10 +431,10 @@ public class Register extends javax.swing.JFrame {
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         File show = new File("images/show.png");
         ImageIcon showIcon = new ImageIcon(show.getAbsolutePath());
-
+        
         File hide = new File("images/hide.png");
         ImageIcon hideIcon = new ImageIcon(hide.getAbsolutePath());
-
+        
         if (jToggleButton1.isSelected()) {
             jPasswordField1.setEchoChar((char) 0); // Show password
             jToggleButton1.setIcon(showIcon); // Switch to hide icon

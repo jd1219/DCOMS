@@ -157,7 +157,6 @@ public class FoodDetailsPage extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1280, 850));
-        setPreferredSize(new java.awt.Dimension(1280, 850));
         setSize(new java.awt.Dimension(1280, 850));
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -280,6 +279,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(1);
         jTextArea1.setWrapStyleWord(true);
+        jTextArea1.setFocusable(false);
         jTextArea1.setOpaque(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -363,9 +363,11 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         OrderRemarksPanel.add(jLabel1, gridBagConstraints);
 
-        remarksTextArea.setColumns(22);
+        remarksTextArea.setColumns(33);
         remarksTextArea.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        remarksTextArea.setLineWrap(true);
         remarksTextArea.setRows(5);
+        remarksTextArea.setWrapStyleWord(true);
         jScrollPane1.setViewportView(remarksTextArea);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -393,7 +395,6 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         MainContentPanel.add(OrderRemarksPanel, gridBagConstraints);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon("D:\\Degree Year 3\\Dcoms_Assignment\\DCOMS\\FoodOrdering\\images\\littleburger.png")); // NOI18N
         jButton1.setText("Order");
         jButton1.setMaximumSize(new java.awt.Dimension(154, 62));
         jButton1.setMinimumSize(new java.awt.Dimension(154, 62));
