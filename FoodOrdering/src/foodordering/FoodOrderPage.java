@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -131,6 +132,7 @@ public class FoodOrderPage extends javax.swing.JFrame {
 
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     public void removeEditingRow() {

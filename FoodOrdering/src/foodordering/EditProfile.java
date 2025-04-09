@@ -14,6 +14,7 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -111,6 +112,7 @@ public class EditProfile extends javax.swing.JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     /**

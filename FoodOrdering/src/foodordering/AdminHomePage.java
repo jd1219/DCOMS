@@ -16,6 +16,7 @@ import java.util.logging.Logger;
  * @author ianwd
  */
 public class AdminHomePage extends javax.swing.JFrame {
+
     private String userId;
 
     /**
@@ -188,7 +189,7 @@ public class AdminHomePage extends javax.swing.JFrame {
         bottomPanel.add(jPanel4, gridBagConstraints);
 
         viewAllFoodButton.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        viewAllFoodButton.setText("VIEW ALL FOOD");
+        viewAllFoodButton.setText("ORDER FOOD");
         viewAllFoodButton.setMinimumSize(new java.awt.Dimension(500, 100));
         viewAllFoodButton.setPreferredSize(new java.awt.Dimension(500, 100));
         viewAllFoodButton.addActionListener(new java.awt.event.ActionListener() {
@@ -240,7 +241,7 @@ public class AdminHomePage extends javax.swing.JFrame {
             Logger.getLogger(AdminHomePage.class.getName()).log(Level.SEVERE, null, ex);
         }
         createacc.setVisible(true);
-        this.dispose();
+
     }//GEN-LAST:event_registerAdminButtonActionPerformed
 
     private void editProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editProfileButtonActionPerformed
@@ -259,18 +260,17 @@ public class AdminHomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_editProfileButtonActionPerformed
 
     private void viewAllFoodButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewAllFoodButtonActionPerformed
-//        ViewAllFood viewallfood = null;
-//        try {
-//            viewallfood = new EditProfile(userId);
-//        } catch (NotBoundException ex) {
-//            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (MalformedURLException ex) {
-//            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (RemoteException ex) {
-//            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        viewallfood.setVisible(true);
-//        this.dispose();
+        FoodOrderPage orderfood = null;
+        try {
+            orderfood = new FoodOrderPage(userId);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
+            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        orderfood.setVisible(true);
     }//GEN-LAST:event_viewAllFoodButtonActionPerformed
 
     /**

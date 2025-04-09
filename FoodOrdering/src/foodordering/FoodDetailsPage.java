@@ -366,7 +366,7 @@ public class FoodDetailsPage extends javax.swing.JFrame {
         remarksTextArea.setColumns(33);
         remarksTextArea.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         remarksTextArea.setLineWrap(true);
-        remarksTextArea.setRows(5);
+        remarksTextArea.setRows(3);
         remarksTextArea.setWrapStyleWord(true);
         jScrollPane1.setViewportView(remarksTextArea);
 

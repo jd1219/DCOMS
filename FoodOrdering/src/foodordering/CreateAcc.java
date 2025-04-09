@@ -14,6 +14,7 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -32,6 +33,8 @@ public class CreateAcc extends javax.swing.JFrame {
     File hide = new File("images/hide.png");
     ImageIcon hideIcon = new ImageIcon(hide.getAbsolutePath());
 
+   
+    
     /**
      * Creates new form Register
      */
@@ -85,6 +88,10 @@ public class CreateAcc extends javax.swing.JFrame {
                 enterKeyPressed(evt);
             }
         });
+        
+         jToggleButton1.setIcon(hideIcon);
+        
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -424,7 +431,6 @@ public class CreateAcc extends javax.swing.JFrame {
             // Show a success message
             JOptionPane.showMessageDialog(this, "Create Account successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-            new AdminHomePage(userId).setVisible(true);
             this.dispose();  // Close registration form
 
         } catch (RemoteException ex) {

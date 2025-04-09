@@ -13,6 +13,7 @@ import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 /**
  *
@@ -42,6 +43,7 @@ public class CustHomePage extends javax.swing.JFrame {
         authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
         
         setLocationRelativeTo(null);
+ 
     }
 
     /**
@@ -185,7 +187,7 @@ public class CustHomePage extends javax.swing.JFrame {
             Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
         }
         orderfood.setVisible(true);
-        this.dispose();
+    
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
