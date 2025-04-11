@@ -42,7 +42,7 @@ public class UserServiceImplementation extends UnicastRemoteObject implements Us
         return userData;
     }
     
-    public void register(String firstName, String lastName, String email, String ic, String Id, String password) throws RemoteException {
+    public synchronized void register(String firstName, String lastName, String email, String ic, String Id, String password) throws RemoteException {
         try {
             connection.register(firstName, lastName, email, ic, Id, password);
         } catch (SQLException ex) {
@@ -51,7 +51,7 @@ public class UserServiceImplementation extends UnicastRemoteObject implements Us
         }
     }
     
-    public void createAcc(String firstName, String lastName, String email, String ic, String Id, String password, String accountType) throws RemoteException {
+    public synchronized void createAcc(String firstName, String lastName, String email, String ic, String Id, String password, String accountType) throws RemoteException {
         try {
             connection.createAcc(firstName, lastName, email, ic, Id, password, accountType);
         } catch (SQLException ex) {

@@ -60,7 +60,7 @@ public class OrderServiceImplementation extends UnicastRemoteObject implements O
     }
 
     @Override
-    public void createOrder(ArrayList<String[]> orderList) throws RemoteException {
+    public synchronized void createOrder(ArrayList<String[]> orderList) throws RemoteException {
         try {
             String newOrderNumber = obtainNewOrderNumber();
             for (int i = 0; i < orderList.size(); i++) {
