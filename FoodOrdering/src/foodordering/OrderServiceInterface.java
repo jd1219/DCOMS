@@ -22,6 +22,5 @@ interface OrderServiceInterface extends Remote{
     public byte[] getFoodImage(String imageName) throws RemoteException;
     
      public void createOrder(ArrayList<String []> orderList) throws RemoteException;
-    
-     public void add(int x, int y) throws RemoteException;
+
 }

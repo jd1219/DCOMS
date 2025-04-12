@@ -50,10 +50,7 @@ public class OrderServiceImplementation extends UnicastRemoteObject implements O
         }
     }
 
-    @Override
-    public void add(int x, int y) throws RemoteException {
 
-    }
 
     public String obtainNewOrderNumber() throws SQLException {
         return dbConn.fetchLatestOrderNumber(); // Call the method that queries D
