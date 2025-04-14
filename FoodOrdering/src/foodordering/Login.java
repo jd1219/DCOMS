@@ -50,6 +50,7 @@ public class Login extends javax.swing.JFrame {
 
         File hide = new File("images/hide.png");
         ImageIcon hideIcon = new ImageIcon(hide.getAbsolutePath());
+        jToggleButton1.setIcon(hideIcon);
 
         
         authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
