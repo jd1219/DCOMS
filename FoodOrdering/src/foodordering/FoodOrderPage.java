@@ -558,7 +558,7 @@ public class FoodOrderPage extends javax.swing.JFrame {
             Thread createOrderThread = new Thread(createOrderRunnable);
             createOrderThread.start();
             JOptionPane.showMessageDialog(null, "Ordered Successful");
-            //this.dispose();
+            this.dispose();
         }
     }//GEN-LAST:event_CheckoutBtnActionPerformed
 
