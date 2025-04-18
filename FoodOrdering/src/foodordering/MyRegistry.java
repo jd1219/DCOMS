@@ -5,21 +5,19 @@
  */
 package foodordering;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.RMISocketFactory;
 import java.security.KeyManagementException;
-import java.security.KeyStore;
+
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.sql.SQLException;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
 
 /**
  *
@@ -28,6 +26,19 @@ import javax.net.ssl.SSLContext;
 public class MyRegistry {
 
     public static void main(String[] args) throws RemoteException, SQLException, FileNotFoundException, IOException, NoSuchAlgorithmException, CertificateException, KeyStoreException, UnrecoverableKeyException, KeyManagementException {
+
+        // Load SSL Keystore
+        String keyStorePath = "serverkeystore.jks";
+        String keyStorePassword = "nyahalo";
+
+        System.setProperty("javax.net.ssl.keyStore", keyStorePath);
+        System.setProperty("javax.net.ssl.keyStorePassword", keyStorePassword);
+        System.setProperty("javax.net.ssl.trustStore", keyStorePath);
+        System.setProperty("javax.net.ssl.trustStorePassword", keyStorePassword);
+
+        // Set custom SSL RMI socket factory
+        RMISocketFactory sslFactory = new SslRmiSocketFactory();
+        RMISocketFactory.setSocketFactory(sslFactory);
 
         //initiate DB Connection
         DBConnection myConn = DBConnection.getInstance();
