@@ -33,8 +33,7 @@ public class MyRegistry {
 
         System.setProperty("javax.net.ssl.keyStore", keyStorePath);
         System.setProperty("javax.net.ssl.keyStorePassword", keyStorePassword);
-        System.setProperty("javax.net.ssl.trustStore", keyStorePath);
-        System.setProperty("javax.net.ssl.trustStorePassword", keyStorePassword);
+ 
 
         // Set custom SSL RMI socket factory
         RMISocketFactory sslFactory = new SslRmiSocketFactory();
