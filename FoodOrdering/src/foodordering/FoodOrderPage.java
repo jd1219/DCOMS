@@ -18,6 +18,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.RMISocketFactory;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -50,11 +51,11 @@ public class FoodOrderPage extends javax.swing.JFrame {
     /**
      * Creates new form FoodOrderPage
      */
-    public FoodOrderPage(String userID) throws NotBoundException, MalformedURLException, RemoteException {
+    public FoodOrderPage(String userID) throws NotBoundException, MalformedURLException, RemoteException, IOException {
         initComponents();
 
         this.currentUser = userID;
-
+        
         OrderServiceInterface Obj = (OrderServiceInterface) Naming.lookup("rmi://localhost:1099/OrderService");
 
         this.connection = Obj;

@@ -9,12 +9,14 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.RMISocketFactory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -38,7 +40,7 @@ public class Login extends javax.swing.JFrame {
      */
     UserServiceInterface authService;
 
-    public Login() throws NotBoundException, MalformedURLException, RemoteException {
+    public Login() throws NotBoundException, MalformedURLException, RemoteException, IOException {
         initComponents();
 
         File file = new File("images/5216909.png");
@@ -52,7 +54,6 @@ public class Login extends javax.swing.JFrame {
         ImageIcon hideIcon = new ImageIcon(hide.getAbsolutePath());
         jToggleButton1.setIcon(hideIcon);
 
-        
         authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
 
         this.setLocationRelativeTo(null);
@@ -280,6 +281,8 @@ public class Login extends javax.swing.JFrame {
                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (RemoteException ex) {
                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
 
@@ -308,9 +311,11 @@ public class Login extends javax.swing.JFrame {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (RemoteException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
         register.setVisible(true);
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
@@ -378,6 +383,8 @@ public class Login extends javax.swing.JFrame {
                 } catch (MalformedURLException ex) {
                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (RemoteException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
                     Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }

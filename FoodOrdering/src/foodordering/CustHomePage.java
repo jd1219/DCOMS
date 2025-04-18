@@ -6,10 +6,12 @@
 package foodordering;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.RMISocketFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -28,7 +30,7 @@ public class CustHomePage extends javax.swing.JFrame {
     /**
      * Creates new form CustHomePage
      */
-    public CustHomePage(String userId) throws NotBoundException, MalformedURLException, RemoteException {
+    public CustHomePage(String userId) throws NotBoundException, MalformedURLException, RemoteException, IOException {
         this.userId = userId;
         
         initComponents();
@@ -185,6 +187,8 @@ public class CustHomePage extends javax.swing.JFrame {
             Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (RemoteException ex) {
             Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
         }
         orderfood.setVisible(true);
     
@@ -199,6 +203,8 @@ public class CustHomePage extends javax.swing.JFrame {
         } catch (MalformedURLException ex) {
             Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (RemoteException ex) {
+            Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
         }
         editprofile.setVisible(true);

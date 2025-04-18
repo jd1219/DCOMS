@@ -7,10 +7,12 @@ package foodordering;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.RMISocketFactory;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,26 +26,26 @@ import javax.swing.SwingUtilities;
  * @author ianwd
  */
 public class Register extends javax.swing.JFrame {
-    
+
     UserServiceInterface authService;
 
     /**
      * Creates new form Register
      */
-    public Register() throws NotBoundException, MalformedURLException, RemoteException {
+    public Register() throws NotBoundException, MalformedURLException, RemoteException, IOException {
         initComponents();
-        
+
         File show = new File("images/show.png");
-        
+
         ImageIcon showIcon = new ImageIcon(show.getAbsolutePath());
-        
+
         File hide = new File("images/hide.png");
         ImageIcon hideIcon = new ImageIcon(hide.getAbsolutePath());
-        
+
         jToggleButton1.setIcon(hideIcon);
-        
+
         authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
-        
+
         this.setLocationRelativeTo(null);
 
         // Make Enter key trigger the login button
@@ -53,43 +55,43 @@ public class Register extends javax.swing.JFrame {
         SwingUtilities.invokeLater(() -> {
             getRootPane().requestFocusInWindow();
         });
-        
+
         jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
             }
         });
-        
+
         jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
             }
         });
-        
+
         jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
             }
         });
-        
+
         jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
             }
         });
-        
+
         jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
             }
         });
-        
+
         jPasswordField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 enterKeyPressed(evt);
             }
         });
-        
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
@@ -378,32 +380,32 @@ public class Register extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "First name should only contain letters.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         if (lastName.isEmpty() || !lastName.matches("[a-zA-Z]+")) {
             JOptionPane.showMessageDialog(this, "Last name should only contain letters.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         if (!email.contains("@") || !email.endsWith(".com")) {
             JOptionPane.showMessageDialog(this, "Email must contain '@' and end with '.com'.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         if (!ic.matches("\\d+")) {
             JOptionPane.showMessageDialog(this, "IC/Passport number should only contain numbers.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         if (Id.isEmpty()) {
             JOptionPane.showMessageDialog(this, "ID cannot be empty.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         if (password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Password cannot be empty.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         try {
             // Check if ID already exists in database
             boolean idExists = authService.isIdTaken(Id);
@@ -416,14 +418,16 @@ public class Register extends javax.swing.JFrame {
             CreateUserThread userProcess = new CreateUserThread(authService, firstName, lastName, email, ic, Id, password);
             Thread userThread = new Thread(userProcess);
             userThread.start();
-            
+
             JOptionPane.showMessageDialog(this, "Registration Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
             new Login().setVisible(true);
             this.dispose();
-            
+
         } catch (RemoteException | NotBoundException | MalformedURLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Remote connection error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ex) {
+            Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -434,10 +438,10 @@ public class Register extends javax.swing.JFrame {
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         File show = new File("images/show.png");
         ImageIcon showIcon = new ImageIcon(show.getAbsolutePath());
-        
+
         File hide = new File("images/hide.png");
         ImageIcon hideIcon = new ImageIcon(hide.getAbsolutePath());
-        
+
         if (jToggleButton1.isSelected()) {
             jPasswordField1.setEchoChar((char) 0); // Show password
             jToggleButton1.setIcon(showIcon); // Switch to hide icon
@@ -447,48 +451,7 @@ public class Register extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new Register().setVisible(true);
-                } catch (NotBoundException ex) {
-                    Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (RemoteException ex) {
-                    Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+ 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

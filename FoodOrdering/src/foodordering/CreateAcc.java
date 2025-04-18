@@ -7,10 +7,12 @@ package foodordering;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.RMISocketFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -38,10 +40,10 @@ public class CreateAcc extends javax.swing.JFrame {
     /**
      * Creates new form Register
      */
-    public CreateAcc(String userId) throws NotBoundException, MalformedURLException, RemoteException  {
+    public CreateAcc(String userId) throws NotBoundException, MalformedURLException, RemoteException, IOException  {
         this.userId = userId;
         initComponents();
-
+        
         authService = (UserServiceInterface) Naming.lookup("rmi://localhost:1099/UserService");
 
         this.setLocationRelativeTo(null);

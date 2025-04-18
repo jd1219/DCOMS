@@ -5,6 +5,7 @@
  */
 package foodordering;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -239,6 +240,8 @@ public class AdminHomePage extends javax.swing.JFrame {
             Logger.getLogger(AdminHomePage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (RemoteException ex) {
             Logger.getLogger(AdminHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AdminHomePage.class.getName()).log(Level.SEVERE, null, ex);
         }
         createacc.setVisible(true);
 
@@ -254,6 +257,8 @@ public class AdminHomePage extends javax.swing.JFrame {
             Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (RemoteException ex) {
             Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AdminHomePage.class.getName()).log(Level.SEVERE, null, ex);
         }
         editprofile.setVisible(true);
     }//GEN-LAST:event_editProfileButtonActionPerformed
@@ -268,6 +273,8 @@ public class AdminHomePage extends javax.swing.JFrame {
             Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (RemoteException ex) {
             Logger.getLogger(CustHomePage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AdminHomePage.class.getName()).log(Level.SEVERE, null, ex);
         }
         orderfood.setVisible(true);
     }//GEN-LAST:event_viewAllFoodButtonActionPerformed

@@ -31,6 +31,7 @@ public class CreateAccountThread implements Runnable {
         this.email = email;
         this.ic = ic;
         this.Id = Id;
+        this.accountType=accountType;
         this.password = password;
     }
 
