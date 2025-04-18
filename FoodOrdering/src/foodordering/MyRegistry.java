@@ -28,7 +28,7 @@ public class MyRegistry {
     public static void main(String[] args) throws RemoteException, SQLException, FileNotFoundException, IOException, NoSuchAlgorithmException, CertificateException, KeyStoreException, UnrecoverableKeyException, KeyManagementException {
 
         // Load SSL Keystore
-        String keyStorePath = "serverkeystore.jks";
+        String keyStorePath = "server_keystore/serverkeystore.jks";
         String keyStorePassword = "nyahalo";
 
         System.setProperty("javax.net.ssl.keyStore", keyStorePath);

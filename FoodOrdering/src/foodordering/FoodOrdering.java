@@ -42,7 +42,7 @@ public class FoodOrdering {
         //</editor-fold>
         // TODO code application logic here
         
-        System.setProperty("javax.net.ssl.trustStore", "serverkeystore.jks");
+        System.setProperty("javax.net.ssl.trustStore", "client_truststore/client-truststore.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "nyahalo");
 
         // Set custom SSL socket factory for RMI
