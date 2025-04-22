@@ -12,12 +12,19 @@ import java.rmi.RemoteException;
  *
  * @author ianwd
  */
-public interface UserServiceInterface extends Remote{
+public interface UserServiceInterface extends Remote {
+
     String[] authenticate(String Id, String password) throws RemoteException;
+
     void register(String firstName, String lastName, String email, String ic, String Id, String password) throws RemoteException;
+
     void createAcc(String firstName, String lastName, String email, String ic, String Id, String password, String accountType) throws RemoteException;
+
     public String[] retrieveCredentials(String userId) throws RemoteException;
+
     void editProfile(String userId, String firstName, String lastName, String email, String ic, String Id, String password) throws RemoteException;
+
     public boolean isIdTaken(String Id) throws RemoteException;
+
     public boolean isIdTakenEdit(String Id, String userId) throws RemoteException;
 }
