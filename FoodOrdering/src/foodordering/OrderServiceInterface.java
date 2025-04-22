@@ -14,13 +14,14 @@ import java.util.ArrayList;
  *
  * @author cleme
  */
-interface OrderServiceInterface extends Remote{
+interface OrderServiceInterface extends Remote {
+
     public ArrayList<String[]> getAllFood() throws RemoteException;
-    
+
     public ArrayList<String[]> getAllFoodCategory() throws RemoteException;
-    
+
     public byte[] getFoodImage(String imageName) throws RemoteException;
-    
-     public void createOrder(ArrayList<String []> orderList) throws RemoteException;
+
+    public void createOrder(ArrayList<String[]> orderList) throws RemoteException;
 
 }
