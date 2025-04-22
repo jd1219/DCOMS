@@ -289,8 +289,10 @@ public class DBConnection {
         String sql;
         PreparedStatement psmt;
 
-        if (daterange.equalsIgnoreCase("all") || daterange.equalsIgnoreCase("all time")) {
-            sql = "SELECT FOOD_ID, SUM(CAST(QUANTITY AS INT)) AS TOTAL_QUANTITY, SUM(CAST(SUBTOTAL AS DECIMAL(10,2))) AS TOTAL_SUBTOTAL "
+        if (daterange.equalsIgnoreCase("all time")) {
+            sql = "SELECT FOOD_ID, "
+                    + "SUM(CAST(QUANTITY AS INT)) AS TOTAL_QUANTITY, "
+                    + "SUM(CAST(SUBTOTAL AS DECIMAL(10,2))) AS TOTAL_SUBTOTAL "
                     + "FROM ORDERS "
                     + "GROUP BY FOOD_ID";
 
@@ -299,9 +301,11 @@ public class DBConnection {
             LocalDate endDate = LocalDate.now();
             LocalDate startDate = endDate.minusMonths(1);
 
-            sql = "SELECT FOOD_ID, SUM(QUANTITY) AS TOTAL_QUANTITY, SUM(SUBTOTAL) AS TOTAL_SUBTOTAL "
+            sql = "SELECT FOOD_ID, "
+                    + "SUM(CAST(QUANTITY AS INT)) AS TOTAL_QUANTITY, "
+                    + "SUM(CAST(SUBTOTAL AS DECIMAL(10,2))) AS TOTAL_SUBTOTAL "
                     + "FROM ORDERS "
-                    + "WHERE DATE BETWEEN ? AND ? "
+                    + "WHERE CAST(SUBSTR(DATE, 1, 10) AS DATE) BETWEEN ? AND ? "
                     + "GROUP BY FOOD_ID";
 
             psmt = conn.prepareStatement(sql);
@@ -311,7 +315,7 @@ public class DBConnection {
 
         ResultSet result = psmt.executeQuery();
         ArrayList<String[]> salesReport = new ArrayList<>();
-        
+
         while (result.next()) {
             String foodId = result.getString("FOOD_ID");
             String foodName = getFoodName(result.getString("FOOD_ID"));

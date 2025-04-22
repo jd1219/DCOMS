@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -332,18 +333,18 @@ public class SalesReport extends javax.swing.JFrame {
 
     private void generateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateButtonActionPerformed
         String daterange = rangeComboBox.getSelectedItem().toString();
-        System.out.println("Sales Report: " + daterange);
+
         try {
             ArrayList<String[]> fetchedSalesReport = connection.getSalesReport(daterange);
-            
-            if(fetchedSalesReport.isEmpty()){
+
+            if (fetchedSalesReport.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "No Sales Report Found!!");
                 return;
             }
-            
+
             DefaultTableModel model = (DefaultTableModel) salesTable.getModel();
             model.setRowCount(0); // to clear the previous record
-            
+
             for (String[] row : fetchedSalesReport) {
                 model.addRow(row);
             }
