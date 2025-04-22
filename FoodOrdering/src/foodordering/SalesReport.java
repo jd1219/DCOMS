@@ -5,7 +5,18 @@
  */
 package foodordering;
 
+import java.awt.Font;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -13,15 +24,35 @@ import javax.swing.JFrame;
  */
 public class SalesReport extends javax.swing.JFrame {
 
+    ReportServiceInterface connection;
+
     /**
      * Creates new form SalesReport
+     *
+     * @throws java.rmi.NotBoundException
+     * @throws java.net.MalformedURLException
+     * @throws java.rmi.RemoteException
      */
-    public SalesReport() {
+    public SalesReport() throws NotBoundException, MalformedURLException, RemoteException {
         initComponents();
 
         this.setLocationRelativeTo(null);
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        connection = (ReportServiceInterface) Naming.lookup("rmi://localhost:1099/ReportService");
+
+        // Set header fontstyle
+        JTableHeader header = salesTable.getTableHeader();
+        header.setFont(new Font("Tahoma", Font.BOLD, 18));
+
+        // set row height
+        salesTable.setRowHeight(30);
+
+        // Set initial row count to 0
+        DefaultTableModel model = (DefaultTableModel) salesTable.getModel();
+        model.setRowCount(0);
+
     }
 
     /**
@@ -37,7 +68,7 @@ public class SalesReport extends javax.swing.JFrame {
         mainPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        salesTable = new javax.swing.JTable();
         bottomPanel = new javax.swing.JPanel();
         topPanel = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -76,10 +107,10 @@ public class SalesReport extends javax.swing.JFrame {
         mainPanel.add(jPanel1, gridBagConstraints);
 
         jScrollPane2.setBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane2.setPreferredSize(new java.awt.Dimension(500, 400));
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(700, 400));
 
-        jTable2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        salesTable.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        salesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -90,22 +121,15 @@ public class SalesReport extends javax.swing.JFrame {
                 "Food ID", "Food Name", "Quantity", "Subtotal"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(salesTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -308,43 +332,29 @@ public class SalesReport extends javax.swing.JFrame {
 
     private void generateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateButtonActionPerformed
         String daterange = rangeComboBox.getSelectedItem().toString();
-        System.out.println(daterange);
+        System.out.println("Sales Report: " + daterange);
+        try {
+            ArrayList<String[]> fetchedSalesReport = connection.getSalesReport(daterange);
+            
+            if(fetchedSalesReport.isEmpty()){
+                JOptionPane.showMessageDialog(this, "No Sales Report Found!!");
+                return;
+            }
+            
+            DefaultTableModel model = (DefaultTableModel) salesTable.getModel();
+            model.setRowCount(0); // to clear the previous record
+            
+            for (String[] row : fetchedSalesReport) {
+                model.addRow(row);
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(SalesReport.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_generateButtonActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SalesReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SalesReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SalesReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SalesReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SalesReport().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomLeftPanel;
@@ -354,11 +364,11 @@ public class SalesReport extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
     private javax.swing.JPanel leftPanel;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JComboBox<String> rangeComboBox;
     private javax.swing.JPanel rightPanel;
+    private javax.swing.JTable salesTable;
     private javax.swing.JPanel topLeftPanel;
     private javax.swing.JPanel topPanel;
     private javax.swing.JPanel topRightPanel;

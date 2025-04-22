@@ -5,6 +5,11 @@
  */
 package foodordering;
 
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -156,7 +161,12 @@ public class ReportPage extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        SalesReport sr = new SalesReport();
+        SalesReport sr = null;
+        try {
+            sr = new SalesReport();
+        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
+            Logger.getLogger(ReportPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
         sr.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 

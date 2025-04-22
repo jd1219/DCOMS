@@ -33,7 +33,6 @@ public class MyRegistry {
 
         System.setProperty("javax.net.ssl.keyStore", keyStorePath);
         System.setProperty("javax.net.ssl.keyStorePassword", keyStorePassword);
- 
 
         // Set custom SSL RMI socket factory
         RMISocketFactory sslFactory = new SslRmiSocketFactory();
@@ -46,6 +45,7 @@ public class MyRegistry {
         Registry reg = LocateRegistry.createRegistry(1099);
         reg.rebind("OrderService", new OrderServiceImplementation(myConn));
         reg.rebind("UserService", new UserServiceImplementation(myConn));
+        reg.rebind("ReportService", new ReportServiceImplementation(myConn));
         System.out.println("Server running at port 1099");
     }
 

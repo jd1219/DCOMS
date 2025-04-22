@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,7 +57,7 @@ public class DBConnection {
         }
         return userData; // Returns null if authentication fails
     }
-    
+
     public String generateUserId() throws SQLException {
         String sql = "SELECT USER_ID FROM USERS ORDER BY CAST(SUBSTR(USER_ID, 5) AS INT) DESC FETCH FIRST 1 ROWS ONLY";
         PreparedStatement psmt = conn.prepareStatement(sql);
@@ -88,7 +89,7 @@ public class DBConnection {
             return "USER000001";
         }
     }
-    
+
     public void register(String firstName, String lastName, String email, String ic, String Id, String password) throws SQLException {
         String userId = generateUserId();
 
@@ -103,22 +104,22 @@ public class DBConnection {
         pstmt.setString(5, firstName);
         pstmt.setString(6, lastName);
         pstmt.setString(7, email);
-  
+
         int rowsInserted = pstmt.executeUpdate();
         conn.commit();
     }
-    
+
     public void createAcc(String firstName, String lastName, String email, String ic, String Id, String password, String accountType) throws SQLException {
         String userId = generateUserId();
-        
+
         if (accountType.equalsIgnoreCase("Customer")) {
             accountType = "CUSTOMER";
         } else if (accountType.equalsIgnoreCase("Admin")) {
             accountType = "ADMIN";
         }
-        
+
         String sql = "INSERT INTO USERS (USER_ID, ID, IC_PASSPORT, PASS, FIRST_NAME, LAST_NAME, EMAIL, ACCOUNT_TYPE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        
+
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
         pstmt.setString(1, userId);   // Set the generated USER_ID
@@ -129,11 +130,11 @@ public class DBConnection {
         pstmt.setString(6, lastName);
         pstmt.setString(7, email);
         pstmt.setString(8, accountType);
-        
+
         int rowsInserted = pstmt.executeUpdate();
         conn.commit();
     }
-    
+
     public String[] retrieveCredentials(String userId) throws RemoteException, SQLException {
         String[] userCredentials = null;
 
@@ -143,14 +144,14 @@ public class DBConnection {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    userCredentials = new String[]{rs.getString("id"), rs.getString("IC_PASSPORT"), rs.getString("pass"), 
+                    userCredentials = new String[]{rs.getString("id"), rs.getString("IC_PASSPORT"), rs.getString("pass"),
                         rs.getString("first_name"), rs.getString("last_name"), rs.getString("email")};
                 }
             }
         }
         return userCredentials;
     }
-    
+
     public boolean isIdTaken(String Id) throws RemoteException, SQLException {
         String query = "SELECT COUNT(*) FROM USERS WHERE ID = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -162,7 +163,7 @@ public class DBConnection {
         }
         return false;  // If no rows match, ID does not exist
     }
-    
+
     public boolean isIdTakenEdit(String Id, String userId) throws RemoteException, SQLException {
         String getCurrentRecordIdQuery = "SELECT ID FROM USERS WHERE USER_ID = ?";
         String currentRecordId = null;
@@ -190,7 +191,7 @@ public class DBConnection {
 
         return false;
     }
-    
+
     public void editProfile(String userId, String firstName, String lastName, String email, String ic, String Id, String password) throws SQLException {
         String sql = "UPDATE USERS SET ID = ?, IC_PASSPORT = ?, PASS = ?, FIRST_NAME = ?, LAST_NAME = ?, EMAIL = ? WHERE USER_ID = ?";
 
@@ -283,4 +284,63 @@ public class DBConnection {
         }
     }
 
+    //REPORT FUNCTION
+    public ArrayList<String[]> getSalesReport(String daterange) throws SQLException {
+        String sql;
+        PreparedStatement psmt;
+
+        if (daterange.equalsIgnoreCase("all") || daterange.equalsIgnoreCase("all time")) {
+            sql = "SELECT FOOD_ID, SUM(CAST(QUANTITY AS INT)) AS TOTAL_QUANTITY, SUM(CAST(SUBTOTAL AS DECIMAL(10,2))) AS TOTAL_SUBTOTAL "
+                    + "FROM ORDERS "
+                    + "GROUP BY FOOD_ID";
+
+            psmt = conn.prepareStatement(sql);
+        } else {
+            LocalDate endDate = LocalDate.now();
+            LocalDate startDate = endDate.minusMonths(1);
+
+            sql = "SELECT FOOD_ID, SUM(QUANTITY) AS TOTAL_QUANTITY, SUM(SUBTOTAL) AS TOTAL_SUBTOTAL "
+                    + "FROM ORDERS "
+                    + "WHERE DATE BETWEEN ? AND ? "
+                    + "GROUP BY FOOD_ID";
+
+            psmt = conn.prepareStatement(sql);
+            psmt.setDate(1, java.sql.Date.valueOf(startDate));
+            psmt.setDate(2, java.sql.Date.valueOf(endDate));
+        }
+
+        ResultSet result = psmt.executeQuery();
+        ArrayList<String[]> salesReport = new ArrayList<>();
+        
+        while (result.next()) {
+            String foodId = result.getString("FOOD_ID");
+            String foodName = getFoodName(result.getString("FOOD_ID"));
+            String totalQty = result.getString("TOTAL_QUANTITY");
+            String totalSubtotal = result.getString("TOTAL_SUBTOTAL");
+
+            salesReport.add(new String[]{foodId, foodName, totalQty, totalSubtotal});
+        }
+
+        return salesReport;
+
+    }
+
+    public ArrayList<String[]> getOrdersReport(String daterange) {
+        String sql = "SELECT * FROM ORDERS";
+
+        return null;
+    }
+
+    public String getFoodName(String food_id) throws SQLException {
+        String sql = "SELECT FOOD_NAME FROM FOOD WHERE FOOD_ID = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setString(1, food_id);
+        ResultSet result = psmt.executeQuery();
+
+        if (result.next()) {
+            return result.getString("FOOD_NAME");
+        } else {
+            return null; // or throw an exception if not found
+        }
+    }
 }
