@@ -5,6 +5,8 @@
  */
 package foodordering;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author User
@@ -18,6 +20,9 @@ public class ReportPage extends javax.swing.JFrame {
         initComponents();
 
         this.setLocationRelativeTo(null);
+
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
     }
 
     /**
@@ -32,7 +37,6 @@ public class ReportPage extends javax.swing.JFrame {
 
         headerPanel = new javax.swing.JPanel();
         pageLabel = new javax.swing.JLabel();
-        backButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         bottomPanel = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
@@ -41,6 +45,7 @@ public class ReportPage extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Report Page");
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         headerPanel.setBackground(new java.awt.Color(0, 102, 102));
@@ -55,24 +60,7 @@ public class ReportPage extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 150, 0, 0);
         headerPanel.add(pageLabel, gridBagConstraints);
-
-        backButton.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        backButton.setText("BACK");
-        backButton.setMaximumSize(new java.awt.Dimension(100, 30));
-        backButton.setMinimumSize(new java.awt.Dimension(100, 30));
-        backButton.setPreferredSize(new java.awt.Dimension(100, 40));
-        backButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        headerPanel.add(backButton, gridBagConstraints);
 
         jPanel1.setMinimumSize(new java.awt.Dimension(300, 1));
         jPanel1.setPreferredSize(new java.awt.Dimension(600, 0));
@@ -166,15 +154,10 @@ public class ReportPage extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        // TODO add your handling code here:
-        this.dispose();
-//        AdminHomePage amh = new AdminHomePage();
-//        amh.setVisible(true);
-    }//GEN-LAST:event_backButtonActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        SalesReport sr = new SalesReport();
+        sr.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -213,7 +196,6 @@ public class ReportPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton backButton;
     private javax.swing.JPanel bottomPanel;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JButton jButton1;

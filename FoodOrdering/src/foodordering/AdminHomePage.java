@@ -227,7 +227,6 @@ public class AdminHomePage extends javax.swing.JFrame {
         // TODO add your handling code here:
         ReportPage rp = new ReportPage();
         rp.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_printReportButtonActionPerformed
 
     private void registerAdminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerAdminButtonActionPerformed
