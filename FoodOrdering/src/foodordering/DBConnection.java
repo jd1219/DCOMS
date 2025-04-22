@@ -344,7 +344,7 @@ public class DBConnection {
         if (result.next()) {
             return result.getString("FOOD_NAME");
         } else {
-            return null; // or throw an exception if not found
+            return "ERROR"; 
         }
     }
 }
