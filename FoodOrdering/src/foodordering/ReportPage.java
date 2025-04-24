@@ -94,7 +94,7 @@ public class ReportPage extends javax.swing.JFrame {
         bottomPanel.setLayout(new java.awt.GridBagLayout());
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jButton1.setText("SALES SUMMARY");
+        jButton1.setText("SALES REPORT");
         jButton1.setPreferredSize(new java.awt.Dimension(500, 100));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,7 +104,7 @@ public class ReportPage extends javax.swing.JFrame {
         bottomPanel.add(jButton1, new java.awt.GridBagConstraints());
 
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jButton2.setText("ORDER SUMMARY");
+        jButton2.setText("CUSTOMER REPORT");
         jButton2.setPreferredSize(new java.awt.Dimension(500, 100));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
