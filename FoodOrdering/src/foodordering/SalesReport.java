@@ -10,8 +10,9 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -341,6 +342,16 @@ public class SalesReport extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "No Sales Report Found!!");
                 return;
             }
+
+            Collections.sort(fetchedSalesReport, new Comparator<String[]>() {
+                @Override
+                public int compare(String[] row1, String[] row2) {
+                    int quantity1 = Integer.parseInt(row1[2]);
+                    int quantity2 = Integer.parseInt(row2[2]);
+
+                    return Integer.compare(quantity2, quantity1);
+                }
+            });
 
             DefaultTableModel model = (DefaultTableModel) salesTable.getModel();
             model.setRowCount(0); // to clear the previous record
