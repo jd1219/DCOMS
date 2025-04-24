@@ -319,7 +319,6 @@ public class DBConnection {
             String totalQty = result.getString("TOTAL_QUANTITY");
             String totalSubtotal = result.getString("TOTAL_SUBTOTAL");
 
-            salesReport.add(new String[]{foodId, foodName, totalQty, totalSubtotal});
             salesReport.add(new String[]{foodId, foodName, totalQty, "RM " + totalSubtotal});
         }
 
@@ -327,10 +326,44 @@ public class DBConnection {
 
     }
 
-    public ArrayList<String[]> getOrdersReport(String daterange) {
-        String sql = "SELECT * FROM ORDERS";
+    public ArrayList<String[]> getCustomersReport(String daterange) throws SQLException {
+        String sql;
+        PreparedStatement psmt;
 
-        return null;
+        if (daterange.equalsIgnoreCase("all time")) {
+            sql = "SELECT USER_ID, SUM(CAST(SUBTOTAL AS DECIMAL(10,2))) AS CUSTOMER_TOTAL "
+                    + "FROM ORDERS "
+                    + "GROUP BY USER_ID "
+                    + "ORDER BY CUSTOMER_TOTAL DESC";
+
+            psmt = conn.prepareStatement(sql);
+        } else {
+            LocalDate endDate = LocalDate.now();
+            LocalDate startDate = endDate.minusMonths(1);
+
+            sql = "SELECT USER_ID, SUM(CAST(SUBTOTAL AS DECIMAL(10,2))) AS CUSTOMER_TOTAL "
+                    + "FROM ORDERS "
+                    + "WHERE DATE BETWEEN ? AND ? "
+                    + "GROUP BY USER_ID "
+                    + "ORDER BY CUSTOMER_TOTAL DESC";
+
+            psmt = conn.prepareStatement(sql);
+            psmt.setDate(1, java.sql.Date.valueOf(startDate));
+            psmt.setDate(2, java.sql.Date.valueOf(endDate));
+        }
+
+        ResultSet result = psmt.executeQuery();
+        ArrayList<String[]> customerReport = new ArrayList<>();
+
+        while (result.next()) {
+            String userId = result.getString("USER_ID");
+            String userName = getCustomerName(userId);
+            String customerTotal = result.getString("CUSTOMER_TOTAL");
+
+            customerReport.add(new String[]{userId, userName, "RM " + customerTotal});
+        }
+
+        return customerReport;
     }
 
     public String getFoodName(String food_id) throws SQLException {
@@ -342,7 +375,23 @@ public class DBConnection {
         if (result.next()) {
             return result.getString("FOOD_NAME");
         } else {
-            return "ERROR"; 
+            return "ERROR";
+        }
+    }
+
+    public String getCustomerName(String user_id) throws SQLException {
+        String sql = "SELECT FIRST_NAME, LAST_NAME FROM USERS WHERE USER_ID = ?";
+        PreparedStatement psmt = conn.prepareStatement(sql);
+        psmt.setString(1, user_id);
+        ResultSet result = psmt.executeQuery();
+
+        if (result.next()) {
+            String firstName = result.getString("FIRST_NAME");
+            String lastName = result.getString("LAST_NAME");
+
+            return firstName + " " + lastName;
+        } else {
+            return "ERROR";
         }
     }
 }
