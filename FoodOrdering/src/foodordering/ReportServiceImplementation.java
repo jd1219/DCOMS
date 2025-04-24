@@ -40,8 +40,16 @@ public class ReportServiceImplementation extends UnicastRemoteObject implements 
     }
 
     @Override
-    public ArrayList<String[]> getOrdersReport(String daterange) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<String[]> getCustomersReport(String daterange) throws RemoteException {
+        ArrayList<String[]> customersReport = new ArrayList<>();
+
+        try {
+            customersReport = connection.getCustomersReport(daterange);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UserServiceImplementation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return customersReport;
     }
 
 }

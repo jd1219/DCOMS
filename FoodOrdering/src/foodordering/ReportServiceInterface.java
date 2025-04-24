@@ -17,6 +17,6 @@ interface ReportServiceInterface extends Remote {
 
     public ArrayList<String[]> getSalesReport(String daterange) throws RemoteException;
 
-    public ArrayList<String[]> getOrdersReport(String daterange) throws RemoteException;
+    public ArrayList<String[]> getCustomersReport(String daterange) throws RemoteException;
 
 }
