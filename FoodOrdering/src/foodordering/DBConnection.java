@@ -320,6 +320,7 @@ public class DBConnection {
             String totalSubtotal = result.getString("TOTAL_SUBTOTAL");
 
             salesReport.add(new String[]{foodId, foodName, totalQty, totalSubtotal});
+            salesReport.add(new String[]{foodId, foodName, totalQty, "RM " + totalSubtotal});
         }
 
         return salesReport;
