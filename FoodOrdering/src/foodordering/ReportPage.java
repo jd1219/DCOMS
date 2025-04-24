@@ -106,6 +106,11 @@ public class ReportPage extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jButton2.setText("CUSTOMER REPORT");
         jButton2.setPreferredSize(new java.awt.Dimension(500, 100));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -169,6 +174,16 @@ public class ReportPage extends javax.swing.JFrame {
         }
         sr.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        CustomerReport cr = null;
+        try {
+            cr = new CustomerReport();
+        } catch (NotBoundException | MalformedURLException | RemoteException ex) {
+            Logger.getLogger(ReportPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        cr.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
